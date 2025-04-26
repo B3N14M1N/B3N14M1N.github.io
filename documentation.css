@@ -230,3 +230,26 @@ pre code {
   padding: 1rem !important;
   overflow: auto;
 }
+
+/* Default styling for code blocks with unrecognized languages */
+pre:not([class]) {
+  background-color: #2a2a2a;
+}
+
+pre code:not([class*="language-"]),
+pre code.language-http,
+pre code.language-plain {
+  background-color: #2a2a2a;
+  color: #e6e6e6;
+}
+
+[data-bs-theme="light"] pre:not([class]) {
+  background-color: #f5f5f5;
+}
+
+[data-bs-theme="light"] pre code:not([class*="language-"]),
+[data-bs-theme="light"] pre code.language-http,
+[data-bs-theme="light"] pre code.language-plain {
+  background-color: #f5f5f5;
+  color: #333;
+}
