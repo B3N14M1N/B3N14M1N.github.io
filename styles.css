@@ -2,9 +2,11 @@
 
 :root {
   /* Light theme variables */
-  --primary-color: #6c63ff; /* Modern purple */
+  --primary-color: #6c63ff;
+  /* Modern purple */
   --secondary-color: #4d44d9;
-  --accent-color: #f96d6d; /* Coral accent */
+  --accent-color: #f96d6d;
+  /* Coral accent */
   --background-color: #ffffff;
   --text-color: #2d3436;
   --card-bg: #ffffff;
@@ -28,9 +30,11 @@
 
 [data-bs-theme="dark"] {
   /* Dark theme variables */
-  --primary-color: #8a80ff; /* Lighter purple for dark mode */
+  --primary-color: #8a80ff;
+  /* Lighter purple for dark mode */
   --secondary-color: #6c63ff;
-  --accent-color: #ff8787; /* Lighter coral for dark mode */
+  --accent-color: #ff8787;
+  /* Lighter coral for dark mode */
   --background-color: #121212;
   --text-color: #f5f5f5;
   --card-bg: #1e1e1e;

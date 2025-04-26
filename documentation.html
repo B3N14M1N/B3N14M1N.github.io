@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Documentation - Beniamin Cioban</title>
@@ -13,107 +14,118 @@
     <!-- Page-specific CSS -->
     <link rel="stylesheet" href="documentation.css" />
     <!-- Highlight.js for code syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
-  </head>
-  <body data-bs-theme="dark">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+</head>
+
+<body data-bs-theme="dark">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">Beniamin Cioban</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="index.html">Home</a>
-            <a class="nav-link" href="projects.html">Projects</a>
-            <a class="nav-link active" href="documentation.html">Documentation</a>
-            <button class="btn theme-toggle-btn ms-2" id="theme-toggle">
-              <i class="bi bi-moon-fill" id="theme-icon"></i>
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Beniamin Cioban</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-          </div>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="projects.html">Projects</a>
+                    <a class="nav-link active" href="documentation.html">Documentation</a>
+                    <button class="btn theme-toggle-btn ms-2" id="theme-toggle">
+                        <i class="bi bi-moon-fill" id="theme-icon"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </nav>
 
     <!-- Documentation Header -->
     <section class="py-5 text-center doc-header" id="doc-header">
-      <div class="container">
-        <h1 class="display-4 fw-bold">Voxel-System Documentation</h1>
-        <p class="lead">Comprehensive guide and API reference for the Voxel-System project</p>
-      </div>
+        <div class="container">
+            <h1 class="display-4 fw-bold">Voxel-System Documentation</h1>
+            <p class="lead">Comprehensive guide and API reference for the Voxel-System project</p>
+        </div>
     </section>
 
     <!-- Documentation Content -->
     <section class="py-5">
-      <div class="container-fluid px-0">
-        <div class="doc-wrapper">
-          <!-- Documentation Sidebar -->
-          <div class="doc-sidebar" id="doc-sidebar">
-            <!-- Sidebar Content -->
-            <div class="doc-toc">
-              <h5>Table of Contents</h5>
-              <div class="list-group">
-                <a href="#introduction" class="list-group-item list-group-item-action">Introduction</a>
-                <a href="#getting-started" class="list-group-item list-group-item-action">Getting Started</a>
-                <a href="#core-concepts" class="list-group-item list-group-item-action">Core Concepts</a>
-                <a href="#api-reference" class="list-group-item list-group-item-action">API Reference</a>
-                <a href="#examples" class="list-group-item list-group-item-action">Examples</a>
-                <a href="#faq" class="list-group-item list-group-item-action">FAQ</a>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Toggle Button - Now outside of sidebar -->
-          <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle Sidebar">
-            <i class="bi bi-chevron-left" id="sidebar-icon"></i>
-          </button>
-          
-          <!-- Mobile Toggle Button (only appears on small screens) -->
-          <button class="doc-mobile-toggle d-lg-none" id="doc-mobile-toggle">
-            <i class="bi bi-list"></i>
-          </button>
-          
-          <!-- Documentation Content -->
-          <div class="doc-content-wrapper" id="doc-content-wrapper">
-            <div class="container">
-              <div class="row">
-                <div class="col-12">
-                  <!-- Introduction Section -->
-                  <section id="introduction" class="doc-content mb-5">
-                    <h2 class="mb-4">Introduction</h2>
-                    <p>Welcome to the Voxel-System documentation. This guide will help you understand and utilize the voxel system effectively in your projects. The voxel system is designed to create and manage voxel-based worlds with high performance and flexibility.</p>
-                    
-                    <h3>What is a Voxel?</h3>
-                    <p>A voxel (volumetric pixel) is a value in a regular grid in three-dimensional space. Like pixels in a 2D bitmap, voxels themselves do not typically have their position explicitly encoded along with their values. Instead, the position of a voxel is inferred based upon its position relative to other voxels (i.e., its position in the data structure that makes up a single volumetric image).</p>
-                    
-                    <h3>Key Features</h3>
-                    <ul>
-                      <li>Efficient memory usage</li>
-                      <li>Fast mesh generation</li>
-                      <li>Multithreaded chunk loading</li>
-                      <li>Customizable voxel types</li>
-                      <li>Procedural terrain generation</li>
-                      <li>Runtime editing capabilities</li>
-                    </ul>
-                  </section>
-                  
+        <div class="container-fluid px-0">
+            <div class="doc-wrapper">
+                <!-- Documentation Sidebar -->
+                <div class="doc-sidebar" id="doc-sidebar">
+                    <!-- Sidebar Content -->
+                    <div class="doc-toc">
+                        <h5>Table of Contents</h5>
+                        <div class="list-group">
+                            <a href="#introduction" class="list-group-item list-group-item-action">Introduction</a>
+                            <a href="#getting-started" class="list-group-item list-group-item-action">Getting
+                                Started</a>
+                            <a href="#core-concepts" class="list-group-item list-group-item-action">Core Concepts</a>
+                            <a href="#api-reference" class="list-group-item list-group-item-action">API Reference</a>
+                            <a href="#examples" class="list-group-item list-group-item-action">Examples</a>
+                            <a href="#faq" class="list-group-item list-group-item-action">FAQ</a>
+                        </div>
+                    </div>
+                </div>
 
-                  <!-- Getting Started Section -->
-                  <section id="getting-started" class="doc-content mb-5">
-                    <h2 class="mb-4">Getting Started</h2>
-                    <p>Follow these steps to get started with the Voxel-System.</p>
-                    
-                    <h3>Installation</h3>
-                    <p>Clone the repository to your local machine:</p>
-                    
-                    <pre><code class="language-bash">git clone https://github.com/username/Voxel-System.git
+                <!-- Toggle Button - Now outside of sidebar -->
+                <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle Sidebar">
+                    <i class="bi bi-chevron-left" id="sidebar-icon"></i>
+                </button>
+
+                <!-- Mobile Toggle Button (only appears on small screens) -->
+                <button class="doc-mobile-toggle d-lg-none" id="doc-mobile-toggle">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <!-- Documentation Content -->
+                <div class="doc-content-wrapper" id="doc-content-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Introduction Section -->
+                                <section id="introduction" class="doc-content mb-5">
+                                    <h2 class="mb-4">Introduction</h2>
+                                    <p>Welcome to the Voxel-System documentation. This guide will help you understand
+                                        and utilize the voxel system effectively in your projects. The voxel system is
+                                        designed to create and manage voxel-based worlds with high performance and
+                                        flexibility.</p>
+
+                                    <h3>What is a Voxel?</h3>
+                                    <p>A voxel (volumetric pixel) is a value in a regular grid in three-dimensional
+                                        space. Like pixels in a 2D bitmap, voxels themselves do not typically have their
+                                        position explicitly encoded along with their values. Instead, the position of a
+                                        voxel is inferred based upon its position relative to other voxels (i.e., its
+                                        position in the data structure that makes up a single volumetric image).</p>
+
+                                    <h3>Key Features</h3>
+                                    <ul>
+                                        <li>Efficient memory usage</li>
+                                        <li>Fast mesh generation</li>
+                                        <li>Multithreaded chunk loading</li>
+                                        <li>Customizable voxel types</li>
+                                        <li>Procedural terrain generation</li>
+                                        <li>Runtime editing capabilities</li>
+                                    </ul>
+                                </section>
+
+
+                                <!-- Getting Started Section -->
+                                <section id="getting-started" class="doc-content mb-5">
+                                    <h2 class="mb-4">Getting Started</h2>
+                                    <p>Follow these steps to get started with the Voxel-System.</p>
+
+                                    <h3>Installation</h3>
+                                    <p>Clone the repository to your local machine:</p>
+
+                                    <pre><code class="language-bash">git clone https://github.com/username/Voxel-System.git
 cd Voxel-System</code></pre>
 
-                    <h3>Basic Usage</h3>
-                    <p>Here's a simple example to create a voxel world:</p>
-                    
-                    <pre><code class="language-csharp">// Initialize the voxel system
+                                    <h3>Basic Usage</h3>
+                                    <p>Here's a simple example to create a voxel world:</p>
+
+                                    <pre><code class="language-csharp">// Initialize the voxel system
 VoxelWorld world = new VoxelWorld(new Vector3(16, 16, 16), 1.0f);
 
 // Create a voxel chunk
@@ -125,32 +137,38 @@ chunk.SetVoxel(new Vector3Int(1, 0, 0), new Voxel(2, VoxelType.Solid));
 
 // Generate mesh for rendering
 chunk.GenerateMesh();</code></pre>
-                  </section>
-                  
+                                </section>
 
-                  <!-- Core Concepts Section -->
-                  <section id="core-concepts" class="doc-content mb-5">
-                    <h2 class="mb-4">Core Concepts</h2>
-                    <p>Understanding these core concepts will help you work effectively with the Voxel-System.</p>
-                    
-                    <h3>VoxelWorld</h3>
-                    <p>The VoxelWorld class is the main entry point for working with the voxel system. It manages chunks and provides high-level operations for the voxel environment.</p>
-                    
-                    <h3>VoxelChunk</h3>
-                    <p>A VoxelChunk represents a section of the world containing multiple voxels. Chunks are the primary unit of organization and optimization in the system.</p>
-                    
-                    <h3>Voxel</h3>
-                    <p>The basic building block of the system. Each voxel contains information about its type and properties.</p>
-                  </section>
-                  
 
-                  <!-- API Reference Section -->
-                  <section id="api-reference" class="doc-content mb-5">
-                    <h2 class="mb-4">API Reference</h2>
-                    <p>Detailed documentation of the classes and methods available in the Voxel-System.</p>
-                    
-                    <h3>VoxelWorld Class</h3>
-                    <pre><code class="language-csharp">public class VoxelWorld
+                                <!-- Core Concepts Section -->
+                                <section id="core-concepts" class="doc-content mb-5">
+                                    <h2 class="mb-4">Core Concepts</h2>
+                                    <p>Understanding these core concepts will help you work effectively with the
+                                        Voxel-System.</p>
+
+                                    <h3>VoxelWorld</h3>
+                                    <p>The VoxelWorld class is the main entry point for working with the voxel system.
+                                        It manages chunks and provides high-level operations for the voxel environment.
+                                    </p>
+
+                                    <h3>VoxelChunk</h3>
+                                    <p>A VoxelChunk represents a section of the world containing multiple voxels. Chunks
+                                        are the primary unit of organization and optimization in the system.</p>
+
+                                    <h3>Voxel</h3>
+                                    <p>The basic building block of the system. Each voxel contains information about its
+                                        type and properties.</p>
+                                </section>
+
+
+                                <!-- API Reference Section -->
+                                <section id="api-reference" class="doc-content mb-5">
+                                    <h2 class="mb-4">API Reference</h2>
+                                    <p>Detailed documentation of the classes and methods available in the Voxel-System.
+                                    </p>
+
+                                    <h3>VoxelWorld Class</h3>
+                                    <pre><code class="language-csharp">public class VoxelWorld
 {
     // Properties
     public Vector3 ChunkSize { get; }
@@ -163,8 +181,8 @@ chunk.GenerateMesh();</code></pre>
     public void SetVoxelAt(Vector3 position, Voxel voxel);
 }</code></pre>
 
-                    <h3>VoxelChunk Class</h3>
-                    <pre><code class="language-csharp">public class VoxelChunk
+                                    <h3>VoxelChunk Class</h3>
+                                    <pre><code class="language-csharp">public class VoxelChunk
 {
     // Properties
     public Vector3 Position { get; }
@@ -177,8 +195,8 @@ chunk.GenerateMesh();</code></pre>
     public void GenerateMesh();
 }</code></pre>
 
-                    <h3>Voxel Struct</h3>
-                    <pre><code class="language-csharp">public struct Voxel
+                                    <h3>Voxel Struct</h3>
+                                    <pre><code class="language-csharp">public struct Voxel
 {
     // Properties
     public int ID { get; }
@@ -187,18 +205,19 @@ chunk.GenerateMesh();</code></pre>
     // Constructor
     public Voxel(int id, VoxelType type);
 }</code></pre>
-                  </section>
-                  
+                                </section>
 
-                  <!-- Examples Section -->
-                  <section id="examples" class="doc-content mb-5">
-                    <h2 class="mb-4">Examples</h2>
-                    <p>Practical examples to help you understand how to use the Voxel-System effectively.</p>
-                    
-                    <h3>Generating Procedural Terrain</h3>
-                    <p>Here's an example of generating procedural terrain using Perlin noise:</p>
-                    
-                    <pre><code class="language-csharp">void GenerateTerrain(VoxelChunk chunk, float seed)
+
+                                <!-- Examples Section -->
+                                <section id="examples" class="doc-content mb-5">
+                                    <h2 class="mb-4">Examples</h2>
+                                    <p>Practical examples to help you understand how to use the Voxel-System
+                                        effectively.</p>
+
+                                    <h3>Generating Procedural Terrain</h3>
+                                    <p>Here's an example of generating procedural terrain using Perlin noise:</p>
+
+                                    <pre><code class="language-csharp">void GenerateTerrain(VoxelChunk chunk, float seed)
 {
     // Loop through each position in the chunk
     for (int x = 0; x &lt; chunk.Size.x; x++)
@@ -240,54 +259,62 @@ chunk.GenerateMesh();</code></pre>
     // Generate the mesh for rendering
     chunk.GenerateMesh();
 }</code></pre>
-                  </section>
-                  
+                                </section>
 
-                  <!-- FAQ Section -->
-                  <section id="faq" class="doc-content mb-5">
-                    <h2 class="mb-4">Frequently Asked Questions</h2>
-                    
-                    <div class="card mb-3">
-                      <div class="card-body">
-                        <h5 class="card-title">How many voxels can a chunk contain?</h5>
-                        <p class="card-text">A chunk size is customizable, but the default is 16x16x16 voxels for a total of 4,096 voxels per chunk. This balances performance and memory usage for most applications.</p>
-                      </div>
+
+                                <!-- FAQ Section -->
+                                <section id="faq" class="doc-content mb-5">
+                                    <h2 class="mb-4">Frequently Asked Questions</h2>
+
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">How many voxels can a chunk contain?</h5>
+                                            <p class="card-text">A chunk size is customizable, but the default is
+                                                16x16x16 voxels for a total of 4,096 voxels per chunk. This balances
+                                                performance and memory usage for most applications.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Is multithreading supported?</h5>
+                                            <p class="card-text">Yes, the system is designed to take advantage of
+                                                multithreading for mesh generation and chunk loading operations. This
+                                                significantly improves performance on modern hardware.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">How is memory usage optimized?</h5>
+                                            <p class="card-text">The system uses various optimization techniques such as
+                                                chunk pooling, compressed voxel storage, and distance-based chunk
+                                                loading to minimize memory usage while maintaining good performance.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Can I use custom voxel types?</h5>
+                                            <p class="card-text">Yes, the system supports extending the VoxelType enum
+                                                and adding custom properties to voxels. You can also create custom
+                                                rendering behaviors for different voxel types.</p>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="card mb-3">
-                      <div class="card-body">
-                        <h5 class="card-title">Is multithreading supported?</h5>
-                        <p class="card-text">Yes, the system is designed to take advantage of multithreading for mesh generation and chunk loading operations. This significantly improves performance on modern hardware.</p>
-                      </div>
-                    </div>
-                    
-                    <div class="card mb-3">
-                      <div class="card-body">
-                        <h5 class="card-title">How is memory usage optimized?</h5>
-                        <p class="card-text">The system uses various optimization techniques such as chunk pooling, compressed voxel storage, and distance-based chunk loading to minimize memory usage while maintaining good performance.</p>
-                      </div>
-                    </div>
-                    
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">Can I use custom voxel types?</h5>
-                        <p class="card-text">Yes, the system supports extending the VoxelType enum and adding custom properties to voxels. You can also create custom rendering behaviors for different voxel types.</p>
-                      </div>
-                    </div>
-                  </section>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </section>
 
     <!-- Footer -->
     <footer class="py-4">
-      <div class="container text-center">
-        <p class="mb-0">&copy; 2023 Beniamin Cioban. All rights reserved.</p>
-      </div>
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2023 Beniamin Cioban. All rights reserved.</p>
+        </div>
     </footer>
 
     <!-- Bootstrap JS Bundle with Popper -->
@@ -298,5 +325,6 @@ chunk.GenerateMesh();</code></pre>
     <script src="shared.js"></script>
     <!-- Documentation-specific JS -->
     <script src="documentation.js"></script>
-  </body>
+</body>
+
 </html>
