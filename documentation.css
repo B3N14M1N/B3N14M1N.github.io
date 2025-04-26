@@ -1,0 +1,184 @@
+/* Documentation page specific styles */
+
+/* Documentation Layout */
+.doc-wrapper {
+  display: flex;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Documentation Header styles */
+.doc-header {
+  padding: 2rem 1rem 2rem calc(var(--sidebar-width) + 1rem);
+  transition: padding-left 0.3s ease;
+  width: 100%;
+}
+
+.doc-header.sidebar-collapsed {
+  padding-left: 1rem !important;
+}
+
+/* Sidebar Styles */
+.doc-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--doc-sidebar-bg);
+  border-right: 1px solid var(--card-border);
+  height: calc(100vh - 72px);
+  position: fixed;
+  top: 72px; /* Match navbar height */
+  left: 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1010;
+}
+
+.doc-toc {
+  padding: 1.5rem;
+}
+
+.doc-toc h5 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.doc-sidebar .list-group-item {
+  background-color: transparent;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  color: var(--text-color);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.doc-sidebar .list-group-item:hover,
+.doc-sidebar .list-group-item:focus {
+  background-color: rgba(108, 99, 255, 0.1);
+  border-left-color: var(--primary-color);
+}
+
+.doc-sidebar .list-group-item.active {
+  background-color: rgba(108, 99, 255, 0.2);
+  color: var(--primary-color);
+  border-left-color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: fixed;
+  top: 80px;
+  left: var(--sidebar-width);
+  width: 30px;
+  height: 30px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1020;
+  transition: left 0.3s ease;
+}
+
+/* Content Area */
+.doc-content-wrapper {
+  flex: 1;
+  padding: 2rem 1rem 2rem calc(var(--sidebar-width) + 1rem);
+  transition: padding-left 0.3s ease;
+  width: 100%;
+}
+
+/* Collapsed sidebar state */
+.doc-sidebar.collapsed {
+  transform: translateX(calc(-1 * var(--sidebar-width)));
+}
+
+.sidebar-collapsed {
+  padding-left: 1rem !important;
+}
+
+.doc-sidebar.collapsed + .sidebar-toggle {
+  left: 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991.98px) {
+  .doc-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .doc-content-wrapper {
+    padding-left: 1rem !important;
+  }
+  
+  .sidebar-toggle {
+    display: none;
+  }
+  
+  .doc-mobile-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1020;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .doc-sidebar.show {
+    transform: translateX(0);
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Documentation content styling */
+.doc-content h2 {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--bs-heading-color);
+  position: relative;
+}
+
+.doc-content h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--bs-primary);
+}
+
+.doc-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--bs-heading-color);
+}
+
+.doc-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+/* Card styling in documentation */
+.doc-content .card {
+  background-color: var(--bs-card-bg);
+  border: 1px solid var(--bs-border-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.doc-content .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
