@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function setActiveProject(index) {
         const projectCols = document.querySelectorAll('.project-col');
         const indicators = document.querySelectorAll('.indicator-dot');
+        const projectsContainer = document.querySelector('.projects-container');
         
         // Find the position of this index in the visible projects
         let dotPosition = -1;
@@ -78,22 +79,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // Set the active class on the selected project
         projectCols.forEach((col, i) => {
             const colIndex = parseInt(col.getAttribute('data-index'));
             if (colIndex === index) {
                 col.classList.add('active');
-                // Ensure the active project is visible and centered
-                setTimeout(() => {
-                    col.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'nearest',
-                        inline: 'center'
-                    });
-                }, 50);
             } else {
                 col.classList.remove('active');
             }
         });
+        
+        // Find the active project element
+        const activeProject = document.querySelector(`.project-col[data-index="${index}"]`);
+        
+        if (activeProject && projectsContainer) {
+            // Calculate position for centering
+            const containerWidth = projectsContainer.offsetWidth;
+            const projectWidth = activeProject.offsetWidth;
+            
+            // Calculate the scroll position needed to center the active project
+            const activeProjectOffsetLeft = activeProject.offsetLeft;
+            const scrollPosition = activeProjectOffsetLeft - (containerWidth / 2) + (projectWidth / 2);
+            
+            // Apply the scroll position with smooth animation
+            projectsContainer.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
+        }
     }
     
     // Navigate to specific project index
@@ -134,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to create project card
     function createProjectCard(project, index) {
         const colDiv = document.createElement('div');
-        colDiv.className = 'project-col col-12 col-md-6 col-lg-4';
+        colDiv.className = 'project-col col-12 col-md-6 col-lg-5'; // Made wider (col-lg-5 instead of col-lg-4)
         colDiv.setAttribute('data-index', index);
         
         // Add data attribute for category filtering
@@ -303,5 +316,14 @@ document.addEventListener('DOMContentLoaded', function() {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
         });
+        
+        // After setting up all controls, center the first project
+        // This ensures that even the first project is centered on page load
+        setTimeout(() => {
+            const visibleProjects = getVisibleProjects();
+            if (visibleProjects.length > 0) {
+                navigateToProject(visibleProjects[0]);
+            }
+        }, 100);
     }
 });
