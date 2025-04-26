@@ -48,6 +48,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 navbar.classList.remove('navbar-dark');
             }
         }
+        /*
+        // Update theme toggle button colors
+        if (themeToggle) {
+            if (theme === 'dark') {
+                themeToggle.style.backgroundColor = 'transparent';
+                themeToggle.style.borderColor = 'var(--primary-color)';
+                themeToggle.style.color = 'var(--primary-color)';
+            } else {
+                themeToggle.style.backgroundColor = 'transparent';
+                themeToggle.style.borderColor = 'var(--primary-color)';
+                themeToggle.style.color = 'var(--primary-color)';
+            }
+        }
+            */
     }
     
     // Load projects dynamically if on projects page
