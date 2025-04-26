@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation - Beniamin Cioban</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+  </head>
+  <body data-bs-theme="dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Beniamin Cioban</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="projects.html">Projects</a>
+            <a class="nav-link active" href="documentation.html">Documentation</a>
+            <button class="btn btn-outline-light ms-2" id="theme-toggle">
+              <i class="bi bi-moon-fill" id="theme-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Documentation Header -->
+    <section class="py-5 text-center">
+      <div class="container">
+        <h1 class="display-4 fw-bold">Voxel-System Documentation</h1>
+        <p class="lead">Comprehensive guide and API reference for the Voxel-System project</p>
+      </div>
+    </section>
+
+    <!-- Documentation Content -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row">
+          <!-- Documentation Sidebar -->
+          <div class="col-lg-3">
+            <div class="doc-sidebar">
+              <div class="doc-toc">
+                <h5 class="mb-3">Table of Contents</h5>
+                <div class="list-group">
+                  <a href="#introduction" class="list-group-item list-group-item-action">Introduction</a>
+                  <a href="#getting-started" class="list-group-item list-group-item-action">Getting Started</a>
+                  <a href="#core-concepts" class="list-group-item list-group-item-action">Core Concepts</a>
+                  <a href="#api-reference" class="list-group-item list-group-item-action">API Reference</a>
+                  <a href="#examples" class="list-group-item list-group-item-action">Examples</a>
+                  <a href="#faq" class="list-group-item list-group-item-action">FAQ</a>
+                </div>
+                
+                <div class="mt-4">
+                  <h5 class="mb-3">View Options</h5>
+                  <div class="d-grid gap-2">
+                    <a href="#" class="btn btn-outline-primary btn-sm" id="view-iframe">View External Docs</a>
+                    <a href="https://b3n14m1n.github.io/Voxel-System/Documentation" target="_blank" class="btn btn-outline-primary btn-sm">Open in New Tab</a>
+                    <a href="voxel-system-docs.pdf" class="btn btn-outline-primary btn-sm">Download PDF</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Documentation Content -->
+          <div class="col-lg-9">
+            <div class="doc-content markdown-content">
+              <div id="documentation-container">
+                <!-- Introduction Section -->
+                <section id="introduction">
+                  <h2>Introduction</h2>
+                  <p>
+                    The Voxel-System is a comprehensive framework designed for creating, managing, and rendering voxel-based environments and objects. 
+                    This documentation provides an overview of the system's features, functionality, and how to implement it in your own projects.
+                  </p>
+                  
+                  <h3>What is Voxel-System?</h3>
+                  <p>
+                    Voxel-System is a library that provides tools for working with voxel-based graphics and game mechanics. 
+                    It includes components for efficiently rendering voxels, managing voxel data structures, implementing physics, 
+                    and creating procedurally generated voxel worlds.
+                  </p>
+                </section>
+                
+                <!-- Getting Started Section -->
+                <section id="getting-started">
+                  <h2>Getting Started</h2>
+                  <p>
+                    To get started with Voxel-System, follow these steps:
+                  </p>
+                  
+                  <h3>Installation</h3>
+                  <pre><code class="language-bash">git clone https://github.com/b3n14m1n/Voxel-System.git
+cd Voxel-System
+</code></pre>
+
+                  <h3>Basic Usage</h3>
+                  <p>Here's a simple example to create a voxel world:</p>
+                  
+                  <pre><code class="language-csharp">// Initialize the voxel system
+VoxelWorld world = new VoxelWorld(new Vector3(16, 16, 16), 1.0f);
+
+// Create a voxel chunk
+VoxelChunk chunk = world.CreateChunk(Vector3.zero);
+
+// Set some voxels
+chunk.SetVoxel(new Vector3Int(0, 0, 0), new Voxel(1, VoxelType.Solid));
+chunk.SetVoxel(new Vector3Int(1, 0, 0), new Voxel(2, VoxelType.Solid));
+
+// Generate mesh for rendering
+chunk.GenerateMesh();</code></pre>
+                </section>
+                
+                <!-- Core Concepts Section -->
+                <section id="core-concepts">
+                  <h2>Core Concepts</h2>
+                  
+                  <h3>Voxel Data Structure</h3>
+                  <p>
+                    The Voxel-System uses a hierarchical data structure for efficient storage and traversal of voxel data:
+                  </p>
+                  <ul>
+                    <li><strong>VoxelWorld</strong>: The main container for all voxel data</li>
+                    <li><strong>VoxelChunk</strong>: A 3D grid of voxels, representing a section of the world</li>
+                    <li><strong>Voxel</strong>: The basic unit, containing data about a single voxel</li>
+                  </ul>
+                </section>
+                
+                <!-- API Reference Section -->
+                <section id="api-reference">
+                  <h2>API Reference</h2>
+                  <p>Detailed documentation of the Voxel-System API:</p>
+                  
+                  <h3>VoxelWorld Class</h3>
+                  <pre><code class="language-csharp">public class VoxelWorld
+{
+    // Properties
+    public Vector3 ChunkSize { get; }
+    public float VoxelSize { get; }
+    
+    // Methods
+    public VoxelChunk CreateChunk(Vector3 position);
+    public VoxelChunk GetChunkAt(Vector3 position);
+    public Voxel GetVoxelAt(Vector3 position);
+    public void SetVoxelAt(Vector3 position, Voxel voxel);
+}</code></pre>
+
+                  <h3>VoxelChunk Class</h3>
+                  <pre><code class="language-csharp">public class VoxelChunk
+{
+    // Properties
+    public Vector3 Position { get; }
+    public Vector3Int Size { get; }
+    
+    // Methods
+    public Voxel GetVoxel(Vector3Int localPosition);
+    public void SetVoxel(Vector3Int localPosition, Voxel voxel);
+    public void GenerateMesh();
+    public bool IsVoxelSolid(Vector3Int localPosition);
+}</code></pre>
+
+                  <h3>Voxel Struct</h3>
+                  <pre><code class="language-csharp">public struct Voxel
+{
+    public int ID { get; set; }
+    public VoxelType Type { get; set; }
+    
+    public Voxel(int id, VoxelType type)
+    {
+        ID = id;
+        Type = type;
+    }
+}</code></pre>
+                </section>
+
+                <!-- Examples Section -->
+                <section id="examples">
+                  <h2>Examples</h2>
+                  
+                  <h3>Procedural Terrain Generation</h3>
+                  <pre><code class="language-csharp">// Generate terrain using Perlin noise
+void GenerateTerrain(VoxelChunk chunk, float seed)
+{
+    for (int x = 0; x < chunk.Size.x; x++)
+    {
+        for (int z = 0; z < chunk.Size.z; z++)
+        {
+            float noiseValue = Mathf.PerlinNoise(
+                (x + chunk.Position.x) * 0.1f + seed,
+                (z + chunk.Position.z) * 0.1f + seed
+            );
+            
+            int height = Mathf.FloorToInt(noiseValue * 10) + 5;
+            
+            for (int y = 0; y < height && y < chunk.Size.y; y++)
+            {
+                Voxel voxel = new Voxel(
+                    y == height - 1 ? 1 : 2, // Grass on top, dirt below
+                    VoxelType.Solid
+                );
+                chunk.SetVoxel(new Vector3Int(x, y, z), voxel);
+            }
+        }
+    }
+    
+    chunk.GenerateMesh();
+}</code></pre>
+
+                </section>
+                
+                <!-- FAQ Section -->
+                <section id="faq">
+                  <h2>Frequently Asked Questions</h2>
+                  
+                  <h3>How does the chunk system work?</h3>
+                  <p>
+                    The chunk system divides the world into manageable 3D grids called chunks. Each chunk contains a fixed grid of voxels.
+                    This approach allows for efficient memory usage and enables features like partial world loading and streaming.
+                  </p>
+                  
+                  <h3>What's the difference between mesh-based and raymarching renderers?</h3>
+                  <p>
+                    The Voxel-System supports two primary rendering methods:
+                  </p>
+                  <ul>
+                    <li><strong>Mesh-based rendering</strong>: Converts voxels into traditional polygon meshes. More efficient for games.</li>
+                    <li><strong>Raymarching rendering</strong>: Uses raymarching techniques for higher visual quality but more computationally intensive.</li>
+                  </ul>
+                </section>
+
+                <!-- External Documentation Container - Hidden by default -->
+                <div id="external-doc-container" style="display: none;">
+                  <div class="ratio ratio-16x9">
+                    <iframe src="https://b3n14m1n.github.io/Voxel-System/Documentation" title="Voxel-System Documentation" allowfullscreen></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5">
+      <div class="container text-center">
+        <p>&copy; 2025 Beniamin Cioban. All rights reserved.</p>
+        <div class="social-links">
+          <a href="#" class="me-3"><i class="bi bi-github"></i></a>
+          <a href="#" class="me-3"><i class="bi bi-linkedin"></i></a>
+          <a href="mailto:beniamin.cioban@student.usv.ro"><i class="bi bi-envelope-fill"></i></a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js for code syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/csharp.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize syntax highlighting
+        document.querySelectorAll('pre code').forEach((el) => {
+          hljs.highlightElement(el);
+        });
+        
+        // Toggle between iframe and static content for documentation
+        const viewIframeBtn = document.getElementById('view-iframe');
+        const docContainer = document.getElementById('documentation-container');
+        const externalDocContainer = document.getElementById('external-doc-container');
+        
+        viewIframeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          if (externalDocContainer.style.display === 'none') {
+            // Switch to iframe view
+            Array.from(docContainer.children).forEach(section => {
+              if (section !== externalDocContainer) {
+                section.style.display = 'none';
+              }
+            });
+            externalDocContainer.style.display = 'block';
+            viewIframeBtn.textContent = 'View Static Docs';
+          } else {
+            // Switch to static view
+            Array.from(docContainer.children).forEach(section => {
+              if (section !== externalDocContainer) {
+                section.style.display = 'block';
+              }
+            });
+            externalDocContainer.style.display = 'none';
+            viewIframeBtn.textContent = 'View External Docs';
+          }
+        });
+      });
+    </script>
+    <!-- Custom JS -->
+    <script src="scripts.js"></script>
+  </body>
+</html>
