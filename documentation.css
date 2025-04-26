@@ -182,3 +182,51 @@
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
+
+/* Code block styling with copy button - IMPROVED */
+pre {
+  position: relative;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 3px 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.3;
+  transition: opacity 0.2s, background-color 0.2s;
+  z-index: 10;
+}
+
+.copy-code-button:hover {
+  background-color: rgba(108, 99, 255, 0.5);
+  opacity: 1;
+}
+
+pre:hover .copy-code-button {
+  opacity: 1;
+}
+
+.copy-code-button.copied {
+  background-color: rgba(40, 167, 69, 0.7);
+  opacity: 1;
+}
+
+/* Remove extra padding, add proper spacing for code blocks */
+pre code {
+  display: block;
+  padding: 1rem !important;
+  overflow: auto;
+}

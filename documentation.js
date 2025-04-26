@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize code highlighting if hljs is available
         if (typeof hljs !== 'undefined') {
             hljs.highlightAll();
+            // Add copy buttons to all code blocks after highlighting
+            addCopyButtons();
         }
         
         // Sidebar functionality
@@ -143,5 +145,51 @@ document.addEventListener('DOMContentLoaded', function() {
                 sidebar.classList.remove('show');
             }
         });
+        
+        // Function to add copy buttons to code blocks
+        function addCopyButtons() {
+            // Select all <pre> elements that contain code blocks
+            const codeBlocks = document.querySelectorAll('pre');
+            
+            codeBlocks.forEach((codeBlock) => {
+                // Create the copy button
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-code-button';
+                copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                copyButton.ariaLabel = 'Copy code to clipboard';
+                
+                // Insert the button at the beginning of the code block
+                codeBlock.insertBefore(copyButton, codeBlock.firstChild);
+                
+                // Add click event to copy the code
+                copyButton.addEventListener('click', () => {
+                    const code = codeBlock.querySelector('code');
+                    const textToCopy = code.innerText;
+                    
+                    // Use the Clipboard API to copy text
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => {
+                            // Give user feedback that code was copied
+                            copyButton.innerHTML = '<i class="bi bi-clipboard-check"></i> Copied!';
+                            copyButton.classList.add('copied');
+                            
+                            // Reset button after 2 seconds
+                            setTimeout(() => {
+                                copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                                copyButton.classList.remove('copied');
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Could not copy text: ', err);
+                            copyButton.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Error!';
+                            
+                            // Reset button after 2 seconds
+                            setTimeout(() => {
+                                copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                            }, 2000);
+                        });
+                });
+            });
+        }
     }
 });
