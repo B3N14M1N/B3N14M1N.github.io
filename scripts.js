@@ -48,56 +48,158 @@ document.addEventListener('DOMContentLoaded', function() {
                 navbar.classList.remove('navbar-dark');
             }
         }
-        /*
-        // Update theme toggle button colors
-        if (themeToggle) {
-            if (theme === 'dark') {
-                themeToggle.style.backgroundColor = 'transparent';
-                themeToggle.style.borderColor = 'var(--primary-color)';
-                themeToggle.style.color = 'var(--primary-color)';
-            } else {
-                themeToggle.style.backgroundColor = 'transparent';
-                themeToggle.style.borderColor = 'var(--primary-color)';
-                themeToggle.style.color = 'var(--primary-color)';
-            }
-        }
-            */
     }
     
     // Load projects dynamically if on projects page
     if (window.location.pathname.includes('projects.html')) {
         loadProjects();
-        setupProjectControls();
     }
     
     // Function to load projects from JSON
-    async function loadProjects() {
+    function loadProjects() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'projects.json', true);
+        xhr.responseType = 'json';
+        
+        xhr.onload = function() {
+            let projects;
+            
+            if (xhr.status === 200) {
+                projects = xhr.response;
+                if (typeof projects === 'string') {
+                    try {
+                        projects = JSON.parse(projects);
+                    } catch (e) {
+                        console.error('Error parsing projects JSON:', e);
+                        return;
+                    }
+                }
+            } else {
+                console.error('Failed to load projects.json, status: ' + xhr.status);
+                // Fallback to hardcoded projects
+                projects = [
+                    {
+                        "id": 1,
+                        "title": "Voxel System",
+                        "description": "A system for creating, managing, and rendering voxel-based environments and objects. Built with performance and extensibility in mind.",
+                        "image": "https://via.placeholder.com/600x400?text=Voxel+System",
+                        "year": "2024",
+                        "demoUrl": "documentation.html",
+                        "demoText": "Documentation",
+                        "repoUrl": "https://github.com/b3n14m1n/Voxel-System",
+                        "tags": ["Game Development", "C#", "Unity"],
+                        "category": "Game Development"
+                    },
+                    {
+                        "id": 2,
+                        "title": "Game Development Project",
+                        "description": "A 2D/3D game built with Unity, featuring interesting mechanics and innovative gameplay. Includes procedural generation and custom physics.",
+                        "image": "https://via.placeholder.com/600x400?text=Game+Project",
+                        "year": "2023",
+                        "demoUrl": "#",
+                        "demoText": "Play Online",
+                        "repoUrl": "#",
+                        "tags": ["Gaming", "Unity", "C#"],
+                        "category": "Game Development"
+                    },
+                    {
+                        "id": 3,
+                        "title": "Web Development Project",
+                        "description": "A responsive website built with modern web technologies like HTML5, CSS3, and JavaScript. Features clean design and smooth user experience.",
+                        "image": "https://via.placeholder.com/600x400?text=Web+Project",
+                        "year": "2023",
+                        "demoUrl": "#",
+                        "demoText": "Live Demo",
+                        "repoUrl": "#",
+                        "tags": ["Web", "JavaScript", "CSS"],
+                        "category": "Web"
+                    },
+                    {
+                        "id": 4,
+                        "title": "Personal Portfolio",
+                        "description": "This very website! A responsive portfolio showcasing my projects and skills, featuring dynamic theme switching and content loading.",
+                        "image": "https://via.placeholder.com/600x400?text=Portfolio+Site",
+                        "year": "2024",
+                        "repoUrl": "https://github.com/b3n14m1n/b3n14m1n.github.io",
+                        "tags": ["Web", "JavaScript", "Bootstrap"],
+                        "category": "Web"
+                    }
+                ];
+            }
+            
+            if (projects && projects.length > 0) {
+                loadProjectsToDOM(projects);
+            } else {
+                console.error('No projects found');
+                setupProjectControls();  // Setup controls even if no projects are loaded
+            }
+        };
+        
+        xhr.onerror = function() {
+            console.error('Error loading projects.json');
+            setupProjectControls();  // Setup controls even if loading fails
+        };
+        
         try {
-            const response = await fetch('projects.json');
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            
-            const projects = await response.json();
-            const projectsContainer = document.getElementById('projects-container');
-            
-            if (projectsContainer && projects.length > 0) {
-                // Clear any existing content if needed
-                // We'll keep the fallback content in case JSON loading fails
-                
-                // Add the projects to the container
-                projects.forEach(project => {
-                    const projectCol = createProjectCard(project);
-                    projectsContainer.appendChild(projectCol);
-                });
-                
-                console.log(`Loaded ${projects.length} projects from JSON`);
-            }
-        } catch (error) {
-            console.error('Error loading projects:', error);
-            // If there's an error, we'll leave the static projects as fallback
+            xhr.send();
+        } catch (e) {
+            console.error('Exception while sending XHR:', e);
+            setupProjectControls();
         }
+    }
+    
+    // Function to load projects to DOM
+    function loadProjectsToDOM(projects) {
+        const projectsContainer = document.getElementById('projects-container');
+        
+        if (projectsContainer) {
+            // Clear existing content
+            projectsContainer.innerHTML = '';
+            
+            // Add the projects to the container
+            projects.forEach(project => {
+                const projectCol = createProjectCard(project);
+                projectsContainer.appendChild(projectCol);
+            });
+            
+            console.log(`Loaded ${projects.length} projects`);
+            
+            // Load categories dynamically after projects are loaded
+            loadCategories(projects);
+            
+            // Setup project filters and scrolling
+            setupProjectControls();
+        }
+    }
+    
+    // Function to dynamically load categories from projects
+    function loadCategories(projects) {
+        const categoriesContainer = document.querySelector('.project-categories');
+        if (!categoriesContainer) return;
+        
+        // Clear existing categories
+        categoriesContainer.innerHTML = '';
+        
+        // Add "All" category button
+        const allButton = document.createElement('button');
+        allButton.className = 'btn btn-sm btn-outline-primary mx-1 active';
+        allButton.setAttribute('data-filter', 'all');
+        allButton.textContent = 'All';
+        categoriesContainer.appendChild(allButton);
+        
+        // Get unique categories
+        const categories = [...new Set(projects.map(project => project.category))];
+        
+        // Add category buttons
+        categories.forEach(category => {
+            if (category) {
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm btn-outline-primary mx-1';
+                button.setAttribute('data-filter', category);
+                button.textContent = category;
+                categoriesContainer.appendChild(button);
+            }
+        });
     }
     
     // Function to create project card
@@ -105,10 +207,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const colDiv = document.createElement('div');
         colDiv.className = 'project-col col-10 col-md-6 col-lg-4';
         
-        // Add data attributes for filtering
+        // Add data attribute for category filtering
+        if (project.category) {
+            colDiv.setAttribute('data-category', project.category);
+        }
+        
+        // Add data attributes for tags filtering
         if (project.tags && project.tags.length) {
             project.tags.forEach(tag => {
-                colDiv.setAttribute(`data-${tag.toLowerCase().replace(/\s+/g, '-')}`, true);
+                colDiv.setAttribute(`data-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`, true);
             });
         }
         
@@ -177,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (filterValue === 'all') {
                             col.style.display = 'block';
                         } else {
-                            if (col.hasAttribute(`data-${filterValue.toLowerCase().replace(/\s+/g, '-')}`)) {
+                            if (col.getAttribute('data-category') === filterValue) {
                                 col.style.display = 'block';
                             } else {
                                 col.style.display = 'none';

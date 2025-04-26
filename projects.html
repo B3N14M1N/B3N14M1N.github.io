@@ -48,10 +48,7 @@
             <i class="bi bi-arrow-left"></i>
           </button>
           <div class="project-categories text-center">
-            <button class="btn btn-sm btn-outline-primary mx-1 active" data-filter="all">All</button>
-            <button class="btn btn-sm btn-outline-primary mx-1" data-filter="Game Development">Games</button>
-            <button class="btn btn-sm btn-outline-primary mx-1" data-filter="Web">Web</button>
-            <button class="btn btn-sm btn-outline-primary mx-1" data-filter="Other">Other</button>
+            <!-- Category buttons will be dynamically loaded here -->
           </div>
           <button class="btn btn-outline-primary scroll-btn" id="scroll-right">
             <i class="bi bi-arrow-right"></i>
@@ -66,7 +63,7 @@
         <div class="projects-scroll-container">
           <div class="row flex-nowrap g-4" id="projects-container">
             <!-- Projects will be loaded dynamically from projects.json -->
-            <!-- Fallback static projects if JSON fails to load -->
+            <!-- If JSON fails to load, these fallback projects will be shown -->
             <div class="project-col col-10 col-md-6 col-lg-4">
               <div class="project-card">
                 <img src="https://via.placeholder.com/600x400?text=Voxel+System" alt="Voxel System Project" class="card-img-top">

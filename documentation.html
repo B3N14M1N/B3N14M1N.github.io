@@ -35,7 +35,7 @@
     </nav>
 
     <!-- Documentation Header -->
-    <section class="py-5 text-center">
+    <section class="py-5 text-center doc-header" id="doc-header">
       <div class="container">
         <h1 class="display-4 fw-bold">Voxel-System Documentation</h1>
         <p class="lead">Comprehensive guide and API reference for the Voxel-System project</p>
@@ -303,6 +303,7 @@ chunk.GenerateMesh();</code></pre>
       document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('doc-sidebar');
         const contentWrapper = document.getElementById('doc-content-wrapper');
+        const docHeader = document.getElementById('doc-header');
         const sidebarToggle = document.getElementById('sidebar-toggle');
         const sidebarIcon = document.getElementById('sidebar-icon');
         const mobileToggle = document.getElementById('doc-mobile-toggle');
@@ -311,6 +312,7 @@ chunk.GenerateMesh();</code></pre>
         function toggleSidebar() {
           sidebar.classList.toggle('collapsed');
           contentWrapper.classList.toggle('sidebar-collapsed');
+          docHeader.classList.toggle('sidebar-collapsed');
           
           if (sidebar.classList.contains('collapsed')) {
             sidebarIcon.classList.remove('bi-chevron-left');
@@ -330,6 +332,7 @@ chunk.GenerateMesh();</code></pre>
         if (savedSidebarState === 'true') {
           sidebar.classList.add('collapsed');
           contentWrapper.classList.add('sidebar-collapsed');
+          docHeader.classList.add('sidebar-collapsed');
           sidebarIcon.classList.remove('bi-chevron-left');
           sidebarIcon.classList.add('bi-chevron-right');
         }
@@ -351,7 +354,7 @@ chunk.GenerateMesh();</code></pre>
         // Close mobile sidebar when clicking navigation links
         const sidebarLinks = document.querySelectorAll('#doc-sidebar .list-group-item');
         sidebarLinks.forEach(link => {
-          link.addEventListener('click', function() {
+          link.addEventListener('click', function(event) {
             if (window.innerWidth < 992) {
               sidebar.classList.remove('show');
             }
@@ -414,7 +417,7 @@ chunk.GenerateMesh();</code></pre>
         // Initial call to set the active link based on current scroll position
         setActiveLink();
         
-        // Resize functionality to handle sidebar state on screen size changes
+        // Resize functionality
         window.addEventListener('resize', function() {
           if (window.innerWidth >= 992) {
             sidebar.classList.remove('show');
