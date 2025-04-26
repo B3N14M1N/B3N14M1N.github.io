@@ -110,11 +110,13 @@
     <!-- Highlight.js for code syntax highlighting -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     
-    <!-- Load individual documentation data files -->
+    <!-- First load the main documentation data manager -->
+    <script src="../Documentations/documentation-data.js"></script>
+    
+    <!-- Then load individual documentation data files (they will auto-register) -->
     <script src="../Documentations/Data/voxel-system.js"></script>
     <script src="../Documentations/Data/web-api.js"></script>
-    <!-- Main documentation data script that combines all documentation -->
-    <script src="../Documentations/documentation-data.js"></script>
+    <!-- Add new documentation files here -->
     
     <!-- Shared JS -->
     <script src="../shared.js"></script>

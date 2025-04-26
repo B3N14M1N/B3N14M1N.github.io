@@ -28,24 +28,14 @@ function registerDocumentation(docModule) {
     documentationData[docModule.id] = docModule.content;
 }
 
-// Automatically detect and load all documentation files from the Data folder
-function loadDocumentationFiles() {
-    // In a non-ES module environment, we need to manually include the data files
-    // We'll use the direct variable references from the included files
-    
-    // Register the voxel system documentation (declared in voxel-system.js)
-    if (typeof voxelSystemData !== 'undefined') {
-        registerDocumentation(voxelSystemData);
-    }
-    
-    // Register the web API documentation (declared in web-api.js)
-    if (typeof webApiData !== 'undefined') {
-        registerDocumentation(webApiData);
-    }
-    
-    // You can add more documentation registrations here as you create new files
-    // The pattern is to check if the corresponding global variable exists and register it
+// Expose the registration function globally so data files can use it
+window.registerDocumentation = registerDocumentation;
+
+// Initialize function - called when the page loads
+function initDocumentationSystem() {
+    console.log("Documentation system initialized");
+    // No need to explicitly register modules here, they will register themselves
 }
 
 // Initialize the data loading
-loadDocumentationFiles();
+document.addEventListener('DOMContentLoaded', initDocumentationSystem);

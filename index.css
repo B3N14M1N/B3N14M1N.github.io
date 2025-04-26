@@ -9,6 +9,8 @@
 .profile-picture-container {
   max-width: 250px;
   margin: 0 auto;
+  will-change: transform; /* Hints browser to optimize for changes */
+  perspective: 1000px; /* Improves 3D transforms */
 }
 
 .profile-picture {
@@ -18,7 +20,11 @@
   border: 5px solid var(--primary-color);
   object-fit: cover;
   aspect-ratio: 1/1;
-  transition: all 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); /* More precise easing */
+  image-rendering: auto; /* Use browser's default rendering algorithm */
+  backface-visibility: hidden; 
+  transform: translateZ(0);
+  -webkit-font-smoothing: subpixel-antialiased; /* Improves text rendering near the image */
 }
 
 .profile-picture:hover {

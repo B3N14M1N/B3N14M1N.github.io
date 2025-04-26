@@ -97,3 +97,8 @@ const webApiData = {
         ]
     }
 };
+
+// Auto-register this documentation module
+if (typeof registerDocumentation === 'function') {
+    registerDocumentation(webApiData);
+}
