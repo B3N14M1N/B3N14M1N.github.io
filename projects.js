@@ -39,23 +39,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Function to create navigation indicators
-    function createNavigationIndicators(count) {
+    function createNavigationIndicators(count, visibleProjects = null) {
         const indicatorsContainer = document.querySelector('.project-navigation-indicators');
         if (!indicatorsContainer) return;
         
         indicatorsContainer.innerHTML = '';
         
-        for (let i = 0; i < count; i++) {
+        // Use either the provided visibleProjects array or create a range from 0 to count-1
+        const projectIndices = visibleProjects || Array.from({ length: count }, (_, i) => i);
+        
+        projectIndices.forEach((projectIndex, dotIndex) => {
             const dot = document.createElement('div');
             dot.className = 'indicator-dot';
-            dot.setAttribute('data-index', i);
+            dot.setAttribute('data-index', projectIndex);
+            dot.setAttribute('data-position', dotIndex);
             
             dot.addEventListener('click', () => {
-                navigateToProject(i);
+                navigateToProject(projectIndex);
             });
             
             indicatorsContainer.appendChild(dot);
-        }
+        });
     }
     
     // Function to set the active project
@@ -63,31 +67,33 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectCols = document.querySelectorAll('.project-col');
         const indicators = document.querySelectorAll('.indicator-dot');
         
-        projectCols.forEach((col, i) => {
-            if (i === index) {
-                col.classList.add('active');
-            } else {
-                col.classList.remove('active');
-            }
-        });
-        
+        // Find the position of this index in the visible projects
+        let dotPosition = -1;
         indicators.forEach((dot, i) => {
-            if (i === index) {
+            if (parseInt(dot.getAttribute('data-index')) === index) {
+                dotPosition = i;
                 dot.classList.add('active');
             } else {
                 dot.classList.remove('active');
             }
         });
         
-        // Center the active project
-        const activeProject = projectCols[index];
-        if (activeProject) {
-            activeProject.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-                inline: 'center'
-            });
-        }
+        projectCols.forEach((col, i) => {
+            const colIndex = parseInt(col.getAttribute('data-index'));
+            if (colIndex === index) {
+                col.classList.add('active');
+                // Ensure the active project is visible and centered
+                setTimeout(() => {
+                    col.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                }, 50);
+            } else {
+                col.classList.remove('active');
+            }
+        });
     }
     
     // Navigate to specific project index
@@ -141,17 +147,20 @@ document.addEventListener('DOMContentLoaded', function() {
             project.tags.forEach(tag => {
                 // Sanitize tag name for valid HTML attribute
                 const sanitizedTag = tag.toLowerCase()
-                                       .replace(/[^a-z0-9]/g, '-')
-                                       .replace(/-+/g, '-')
-                                       .replace(/^-|-$/g, '');
+                                           .replace(/[^a-z0-9]/g, '-')
+                                           .replace(/-+/g, '-')
+                                           .replace(/^-|-$/g, '');
                 colDiv.setAttribute(`data-tag-${sanitizedTag}`, true);
             });
         }
         
         const cardHTML = `
             <div class="project-card">
-                <img src="${project.image || 'https://via.placeholder.com/600x400?text=' + encodeURIComponent(project.title)}" 
-                    alt="${project.title}" class="card-img-top">
+                <div class="project-image-container">
+                    <img src="${project.image || 'https://via.placeholder.com/600x400?text=' + encodeURIComponent(project.title)}" 
+                        alt="${project.title}" class="card-img-top">
+                    <div class="project-image-overlay"></div>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title fw-bold">${project.title}</h5>
                     <p class="card-text">${project.description}</p>
@@ -182,15 +191,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // Navigation buttons
         if (scrollLeftBtn && scrollRightBtn) {
             scrollLeftBtn.addEventListener('click', () => {
-                if (currentProjectIndex > 0) {
-                    currentProjectIndex--;
+                // Find the previous visible project
+                const visibleProjects = getVisibleProjects();
+                const currentPosition = visibleProjects.indexOf(currentProjectIndex);
+                
+                if (currentPosition > 0) {
+                    currentProjectIndex = visibleProjects[currentPosition - 1];
                     navigateToProject(currentProjectIndex);
                 }
             });
             
             scrollRightBtn.addEventListener('click', () => {
-                if (currentProjectIndex < projectCount - 1) {
-                    currentProjectIndex++;
+                // Find the next visible project
+                const visibleProjects = getVisibleProjects();
+                const currentPosition = visibleProjects.indexOf(currentProjectIndex);
+                
+                if (currentPosition < visibleProjects.length - 1) {
+                    currentProjectIndex = visibleProjects[currentPosition + 1];
                     navigateToProject(currentProjectIndex);
                 }
             });
@@ -211,43 +228,57 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Filter projects
                     const projectCols = document.querySelectorAll('.project-col');
-                    let firstVisibleIndex = -1;
+                    let visibleProjects = [];
                     
-                    projectCols.forEach((col, index) => {
+                    projectCols.forEach((col) => {
+                        const index = parseInt(col.getAttribute('data-index'));
                         if (filterValue === 'all') {
                             col.style.display = 'block';
-                            if (firstVisibleIndex === -1) firstVisibleIndex = index;
+                            visibleProjects.push(index);
                         } else {
                             if (col.getAttribute('data-category') === filterValue) {
                                 col.style.display = 'block';
-                                if (firstVisibleIndex === -1) firstVisibleIndex = index;
+                                visibleProjects.push(index);
                             } else {
                                 col.style.display = 'none';
                             }
                         }
                     });
                     
+                    // Update the indicators to only show dots for visible projects
+                    createNavigationIndicators(projectCount, visibleProjects);
+                    
                     // Navigate to first visible project in the filtered set
-                    if (firstVisibleIndex !== -1) {
-                        currentProjectIndex = firstVisibleIndex;
+                    if (visibleProjects.length > 0) {
+                        currentProjectIndex = visibleProjects[0];
                         navigateToProject(currentProjectIndex);
                     }
                 });
             });
         }
         
+        // Function to get currently visible projects
+        function getVisibleProjects() {
+            const projectCols = document.querySelectorAll('.project-col');
+            const visibleProjects = [];
+            
+            projectCols.forEach(col => {
+                if (col.style.display !== 'none') {
+                    visibleProjects.push(parseInt(col.getAttribute('data-index')));
+                }
+            });
+            
+            return visibleProjects;
+        }
+        
         // Add keyboard navigation
         document.addEventListener('keydown', function(event) {
             if (event.key === 'ArrowLeft') {
-                if (currentProjectIndex > 0) {
-                    currentProjectIndex--;
-                    navigateToProject(currentProjectIndex);
-                }
+                // Simulate clicking the left scroll button
+                scrollLeftBtn.click();
             } else if (event.key === 'ArrowRight') {
-                if (currentProjectIndex < projectCount - 1) {
-                    currentProjectIndex++;
-                    navigateToProject(currentProjectIndex);
-                }
+                // Simulate clicking the right scroll button
+                scrollRightBtn.click();
             }
         });
         
@@ -257,16 +288,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const handleSwipe = () => {
             if (touchStartX - touchEndX > 70) { // Swiped left
-                if (currentProjectIndex < projectCount - 1) {
-                    currentProjectIndex++;
-                    navigateToProject(currentProjectIndex);
-                }
+                scrollRightBtn.click();
             }
             if (touchEndX - touchStartX > 70) { // Swiped right
-                if (currentProjectIndex > 0) {
-                    currentProjectIndex--;
-                    navigateToProject(currentProjectIndex);
-                }
+                scrollLeftBtn.click();
             }
         };
         
