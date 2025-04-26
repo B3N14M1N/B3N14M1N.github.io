@@ -28,20 +28,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update UI based on theme
     function updateThemeUI(theme) {
-        // Update theme toggle button
+        // Update theme toggle button icon
         if (theme === 'dark') {
             themeIcon.classList.remove('bi-sun-fill');
             themeIcon.classList.add('bi-moon-fill');
-            themeToggle.classList.remove('btn-outline-dark');
-            themeToggle.classList.add('btn-outline-light');
         } else {
             themeIcon.classList.remove('bi-moon-fill');
             themeIcon.classList.add('bi-sun-fill');
-            themeToggle.classList.remove('btn-outline-light');
-            themeToggle.classList.add('btn-outline-dark');
         }
         
-        // Update navbar
+        // Update navbar classes
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             if (theme === 'dark') {
@@ -57,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load projects dynamically if on projects page
     if (window.location.pathname.includes('projects.html')) {
         loadProjects();
+        setupProjectControls();
     }
     
     // Function to load projects from JSON
@@ -72,12 +69,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const projectsContainer = document.getElementById('projects-container');
             
             if (projectsContainer && projects.length > 0) {
-                projectsContainer.innerHTML = '';
+                // Clear any existing content if needed
+                // We'll keep the fallback content in case JSON loading fails
                 
+                // Add the projects to the container
                 projects.forEach(project => {
-                    const projectCard = createProjectCard(project);
-                    projectsContainer.appendChild(projectCard);
+                    const projectCol = createProjectCard(project);
+                    projectsContainer.appendChild(projectCol);
                 });
+                
+                console.log(`Loaded ${projects.length} projects from JSON`);
             }
         } catch (error) {
             console.error('Error loading projects:', error);
@@ -88,7 +89,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to create project card
     function createProjectCard(project) {
         const colDiv = document.createElement('div');
-        colDiv.className = 'col-md-6 col-lg-4 mb-4';
+        colDiv.className = 'project-col col-10 col-md-6 col-lg-4';
+        
+        // Add data attributes for filtering
+        if (project.tags && project.tags.length) {
+            project.tags.forEach(tag => {
+                colDiv.setAttribute(`data-${tag.toLowerCase().replace(/\s+/g, '-')}`, true);
+            });
+        }
         
         const cardHTML = `
             <div class="project-card">
@@ -102,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${project.demoUrl ? `<a href="${project.demoUrl}" class="btn btn-sm btn-outline-primary">${project.demoText || 'Demo'}</a>` : ''}
                             ${project.repoUrl ? `<a href="${project.repoUrl}" class="btn btn-sm btn-primary">Repository</a>` : ''}
                         </div>
-                        <small class="text-muted">${project.year || ''}</small>
+                        <small class="project-year">${project.year || ''}</small>
                     </div>
                 </div>
             </div>
@@ -110,6 +118,61 @@ document.addEventListener('DOMContentLoaded', function() {
         
         colDiv.innerHTML = cardHTML;
         return colDiv;
+    }
+    
+    // Setup project filtering and scrolling
+    function setupProjectControls() {
+        const scrollLeftBtn = document.getElementById('scroll-left');
+        const scrollRightBtn = document.getElementById('scroll-right');
+        const projectsContainer = document.querySelector('.projects-scroll-container');
+        const filterButtons = document.querySelectorAll('.project-categories .btn');
+        
+        // Horizontal scrolling buttons
+        if (scrollLeftBtn && scrollRightBtn && projectsContainer) {
+            scrollLeftBtn.addEventListener('click', () => {
+                projectsContainer.scrollBy({
+                    left: -300,
+                    behavior: 'smooth'
+                });
+            });
+            
+            scrollRightBtn.addEventListener('click', () => {
+                projectsContainer.scrollBy({
+                    left: 300,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // Project filtering
+        if (filterButtons.length) {
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    // Get the filter value
+                    const filterValue = button.getAttribute('data-filter');
+                    
+                    // Filter projects
+                    const projectCols = document.querySelectorAll('.project-col');
+                    projectCols.forEach(col => {
+                        if (filterValue === 'all') {
+                            col.style.display = 'block';
+                        } else {
+                            if (col.hasAttribute(`data-${filterValue.toLowerCase().replace(/\s+/g, '-')}`)) {
+                                col.style.display = 'block';
+                            } else {
+                                col.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+        }
     }
     
     // Enable Bootstrap tooltips

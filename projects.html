@@ -13,7 +13,7 @@
   </head>
   <body data-bs-theme="dark">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg sticky-top">
       <div class="container">
         <a class="navbar-brand" href="index.html">Beniamin Cioban</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,7 @@
             <a class="nav-link" href="index.html">Home</a>
             <a class="nav-link active" href="projects.html">Projects</a>
             <a class="nav-link" href="documentation.html">Documentation</a>
-            <button class="btn btn-outline-light ms-2" id="theme-toggle">
+            <button class="btn theme-toggle-btn ms-2" id="theme-toggle">
               <i class="bi bi-moon-fill" id="theme-icon"></i>
             </button>
           </div>
@@ -40,60 +40,82 @@
       </div>
     </section>
 
-    <!-- Projects Section -->
-    <section class="py-5">
+    <!-- Projects Navigation -->
+    <section class="mb-4">
       <div class="container">
-        <div class="row g-4" id="projects-container">
-          <!-- Projects will be loaded dynamically from projects.json -->
-          <!-- Fallback static projects if JSON fails to load -->
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="project-card">
-              <img src="https://via.placeholder.com/600x400?text=Voxel+System" alt="Voxel System Project" class="card-img-top">
-              <div class="card-body">
-                <h5 class="card-title fw-bold">Voxel System</h5>
-                <p class="card-text">A system for creating, managing, and rendering voxel-based environments and objects.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="btn-group">
-                    <a href="documentation.html" class="btn btn-sm btn-outline-primary">Documentation</a>
-                    <a href="https://github.com/b3n14m1n/Voxel-System" class="btn btn-sm btn-primary">Repository</a>
+        <div class="d-flex justify-content-between align-items-center">
+          <button class="btn btn-outline-primary scroll-btn" id="scroll-left">
+            <i class="bi bi-arrow-left"></i>
+          </button>
+          <div class="project-categories text-center">
+            <button class="btn btn-sm btn-outline-primary mx-1 active" data-filter="all">All</button>
+            <button class="btn btn-sm btn-outline-primary mx-1" data-filter="Game Development">Games</button>
+            <button class="btn btn-sm btn-outline-primary mx-1" data-filter="Web">Web</button>
+            <button class="btn btn-sm btn-outline-primary mx-1" data-filter="Other">Other</button>
+          </div>
+          <button class="btn btn-outline-primary scroll-btn" id="scroll-right">
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section with Horizontal Scrolling -->
+    <section class="py-4">
+      <div class="container position-relative">
+        <div class="projects-scroll-container">
+          <div class="row flex-nowrap g-4" id="projects-container">
+            <!-- Projects will be loaded dynamically from projects.json -->
+            <!-- Fallback static projects if JSON fails to load -->
+            <div class="project-col col-10 col-md-6 col-lg-4">
+              <div class="project-card">
+                <img src="https://via.placeholder.com/600x400?text=Voxel+System" alt="Voxel System Project" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold">Voxel System</h5>
+                  <p class="card-text">A system for creating, managing, and rendering voxel-based environments and objects.</p>
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="btn-group">
+                      <a href="documentation.html" class="btn btn-sm btn-outline-primary">Documentation</a>
+                      <a href="https://github.com/b3n14m1n/Voxel-System" class="btn btn-sm btn-primary">Repository</a>
+                    </div>
+                    <small class="project-year">2024</small>
                   </div>
-                  <small class="text-muted">2024</small>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <!-- Project 2 (Placeholder) -->
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="project-card">
-              <img src="https://via.placeholder.com/600x400?text=Game+Project" alt="Game Project" class="card-img-top">
-              <div class="card-body">
-                <h5 class="card-title fw-bold">Game Development Project</h5>
-                <p class="card-text">A 2D/3D game built with Unity, featuring interesting mechanics and innovative gameplay.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="btn-group">
-                    <a href="#" class="btn btn-sm btn-outline-primary">Play Online</a>
-                    <a href="#" class="btn btn-sm btn-primary">Repository</a>
+            
+            <!-- Project 2 (Placeholder) -->
+            <div class="project-col col-10 col-md-6 col-lg-4">
+              <div class="project-card">
+                <img src="https://via.placeholder.com/600x400?text=Game+Project" alt="Game Project" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold">Game Development Project</h5>
+                  <p class="card-text">A 2D/3D game built with Unity, featuring interesting mechanics and innovative gameplay.</p>
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="btn-group">
+                      <a href="#" class="btn btn-sm btn-outline-primary">Play Online</a>
+                      <a href="#" class="btn btn-sm btn-primary">Repository</a>
+                    </div>
+                    <small class="project-year">2023</small>
                   </div>
-                  <small class="text-muted">2023</small>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <!-- Project 3 (Placeholder) -->
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="project-card">
-              <img src="https://via.placeholder.com/600x400?text=Web+Project" alt="Web Development Project" class="card-img-top">
-              <div class="card-body">
-                <h5 class="card-title fw-bold">Web Development Project</h5>
-                <p class="card-text">A responsive website built with modern web technologies like HTML5, CSS3, and JavaScript.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="btn-group">
-                    <a href="#" class="btn btn-sm btn-outline-primary">Live Demo</a>
-                    <a href="#" class="btn btn-sm btn-primary">Repository</a>
+            
+            <!-- Project 3 (Placeholder) -->
+            <div class="project-col col-10 col-md-6 col-lg-4">
+              <div class="project-card">
+                <img src="https://via.placeholder.com/600x400?text=Web+Project" alt="Web Development Project" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold">Web Development Project</h5>
+                  <p class="card-text">A responsive website built with modern web technologies like HTML5, CSS3, and JavaScript.</p>
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="btn-group">
+                      <a href="#" class="btn btn-sm btn-outline-primary">Live Demo</a>
+                      <a href="#" class="btn btn-sm btn-primary">Repository</a>
+                    </div>
+                    <small class="project-year">2023</small>
                   </div>
-                  <small class="text-muted">2023</small>
                 </div>
               </div>
             </div>

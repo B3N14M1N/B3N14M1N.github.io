@@ -15,7 +15,7 @@
   </head>
   <body data-bs-theme="dark">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg sticky-top">
       <div class="container">
         <a class="navbar-brand" href="index.html">Beniamin Cioban</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,7 @@
             <a class="nav-link" href="index.html">Home</a>
             <a class="nav-link" href="projects.html">Projects</a>
             <a class="nav-link active" href="documentation.html">Documentation</a>
-            <button class="btn btn-outline-light ms-2" id="theme-toggle">
+            <button class="btn theme-toggle-btn ms-2" id="theme-toggle">
               <i class="bi bi-moon-fill" id="theme-icon"></i>
             </button>
           </div>
@@ -47,11 +47,25 @@
       <div class="container">
         <div class="row">
           <!-- Documentation Sidebar -->
-          <div class="col-lg-3">
-            <div class="doc-sidebar">
-              <div class="doc-toc">
-                <h5 class="mb-3">Table of Contents</h5>
-                <div class="list-group">
+          <div class="col-lg-3 doc-sidebar-container">
+            <div class="doc-sidebar" id="doc-sidebar">
+              <!-- Toggle Button -->
+              <button class="sidebar-toggle" id="sidebar-toggle">
+                <i class="bi bi-chevron-left" id="sidebar-icon"></i>
+              </button>
+              
+              <!-- Sidebar Icons for Collapsed State -->
+              <div class="sidebar-icon">
+                <i class="bi bi-list-ul" title="Table of Contents"></i>
+              </div>
+              <div class="sidebar-icon">
+                <i class="bi bi-gear" title="View Options"></i>
+              </div>
+              
+              <!-- Sidebar Content -->
+              <div class="doc-toc sidebar-text">
+                <h5>Table of Contents</h5>
+                <div class="list-group mb-4">
                   <a href="#introduction" class="list-group-item list-group-item-action">Introduction</a>
                   <a href="#getting-started" class="list-group-item list-group-item-action">Getting Started</a>
                   <a href="#core-concepts" class="list-group-item list-group-item-action">Core Concepts</a>
@@ -60,20 +74,24 @@
                   <a href="#faq" class="list-group-item list-group-item-action">FAQ</a>
                 </div>
                 
-                <div class="mt-4">
-                  <h5 class="mb-3">View Options</h5>
-                  <div class="d-grid gap-2">
-                    <a href="#" class="btn btn-outline-primary btn-sm" id="view-iframe">View External Docs</a>
-                    <a href="https://b3n14m1n.github.io/Voxel-System/Documentation" target="_blank" class="btn btn-outline-primary btn-sm">Open in New Tab</a>
-                    <a href="voxel-system-docs.pdf" class="btn btn-outline-primary btn-sm">Download PDF</a>
-                  </div>
+                <h5>View Options</h5>
+                <div class="d-grid gap-2">
+                  <a href="#" class="btn btn-outline-primary" id="view-iframe">
+                    <i class="bi bi-file-earmark-text me-2"></i>View External Docs
+                  </a>
+                  <a href="https://b3n14m1n.github.io/Voxel-System/Documentation" target="_blank" class="btn btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right me-2"></i>Open in New Tab
+                  </a>
+                  <a href="voxel-system-docs.pdf" class="btn btn-outline-primary">
+                    <i class="bi bi-file-earmark-pdf me-2"></i>Download PDF
+                  </a>
                 </div>
               </div>
             </div>
           </div>
           
           <!-- Documentation Content -->
-          <div class="col-lg-9">
+          <div class="col-lg-9" id="doc-main-content">
             <div class="doc-content markdown-content">
               <div id="documentation-container">
                 <!-- Introduction Section -->
@@ -291,7 +309,7 @@ void GenerateTerrain(VoxelChunk chunk, float seed)
               }
             });
             externalDocContainer.style.display = 'block';
-            viewIframeBtn.textContent = 'View Static Docs';
+            viewIframeBtn.innerHTML = '<i class="bi bi-file-earmark-text me-2"></i>View Static Docs';
           } else {
             // Switch to static view
             Array.from(docContainer.children).forEach(section => {
@@ -300,8 +318,54 @@ void GenerateTerrain(VoxelChunk chunk, float seed)
               }
             });
             externalDocContainer.style.display = 'none';
-            viewIframeBtn.textContent = 'View External Docs';
+            viewIframeBtn.innerHTML = '<i class="bi bi-file-earmark-text me-2"></i>View External Docs';
           }
+        });
+
+        // Sidebar toggle functionality
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('doc-sidebar');
+        const sidebarIcon = document.getElementById('sidebar-icon');
+        const docMainContent = document.getElementById('doc-main-content');
+        
+        // Check for saved sidebar state
+        const sidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+        
+        if (sidebarCollapsed) {
+          sidebar.classList.add('collapsed');
+          sidebarIcon.classList.remove('bi-chevron-left');
+          sidebarIcon.classList.add('bi-chevron-right');
+          docMainContent.classList.add('col-lg-11');
+          docMainContent.classList.remove('col-lg-9');
+        }
+        
+        sidebarToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('collapsed');
+          
+          if (sidebar.classList.contains('collapsed')) {
+            sidebarIcon.classList.remove('bi-chevron-left');
+            sidebarIcon.classList.add('bi-chevron-right');
+            docMainContent.classList.add('col-lg-11');
+            docMainContent.classList.remove('col-lg-9');
+            localStorage.setItem('sidebar-collapsed', 'true');
+          } else {
+            sidebarIcon.classList.remove('bi-chevron-right');
+            sidebarIcon.classList.add('bi-chevron-left');
+            docMainContent.classList.add('col-lg-9');
+            docMainContent.classList.remove('col-lg-11');
+            localStorage.setItem('sidebar-collapsed', 'false');
+          }
+        });
+        
+        // Expand sidebar when hovering over it if collapsed
+        sidebar.addEventListener('mouseenter', function() {
+          if (sidebar.classList.contains('collapsed')) {
+            sidebar.classList.add('hover-expand');
+          }
+        });
+        
+        sidebar.addEventListener('mouseleave', function() {
+          sidebar.classList.remove('hover-expand');
         });
       });
     </script>
