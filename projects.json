@@ -8,7 +8,8 @@
     "demoUrl": "documentation.html",
     "demoText": "Documentation",
     "repoUrl": "https://github.com/b3n14m1n/Voxel-System",
-    "tags": ["Game Development", "C#", "Unity"]
+    "tags": ["Game Development", "C#", "Unity"],
+    "category": "Game Development"
   },
   {
     "id": 2,
@@ -19,7 +20,8 @@
     "demoUrl": "#",
     "demoText": "Play Online",
     "repoUrl": "#",
-    "tags": ["Gaming", "Unity", "C#"]
+    "tags": ["Gaming", "Unity", "C#"],
+    "category": "Game Development"
   },
   {
     "id": 3,
@@ -30,7 +32,8 @@
     "demoUrl": "#",
     "demoText": "Live Demo",
     "repoUrl": "#",
-    "tags": ["Web", "JavaScript", "CSS"]
+    "tags": ["Web", "JavaScript", "CSS"],
+    "category": "Web"
   },
   {
     "id": 4,
@@ -39,6 +42,7 @@
     "image": "https://via.placeholder.com/600x400?text=Portfolio+Site",
     "year": "2024",
     "repoUrl": "https://github.com/b3n14m1n/b3n14m1n.github.io",
-    "tags": ["Web", "JavaScript", "Bootstrap"]
+    "tags": ["Web", "JavaScript", "Bootstrap"],
+    "category": "Web"
   }
 ]
