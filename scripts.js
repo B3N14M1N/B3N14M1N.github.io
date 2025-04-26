@@ -170,6 +170,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Add data attributes for tags filtering
+        // Add data attribute for category filtering
+        if (project.category) {
+            colDiv.setAttribute('data-category', project.category);
+        }
+        
+        // Add data attributes for tags filtering
         if (project.tags && project.tags.length) {
             project.tags.forEach(tag => {
                 // Sanitize tag name for valid HTML attribute by removing special characters
