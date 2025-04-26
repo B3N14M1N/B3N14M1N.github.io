@@ -43,9 +43,10 @@
     <!-- Projects Section -->
     <section class="py-5">
       <div class="container">
-        <div class="row g-4">
-          <!-- Project 1: Voxel System -->
-          <div class="col-md-6 col-lg-4">
+        <div class="row g-4" id="projects-container">
+          <!-- Projects will be loaded dynamically from projects.json -->
+          <!-- Fallback static projects if JSON fails to load -->
+          <div class="col-md-6 col-lg-4 mb-4">
             <div class="project-card">
               <img src="https://via.placeholder.com/600x400?text=Voxel+System" alt="Voxel System Project" class="card-img-top">
               <div class="card-body">
@@ -63,7 +64,7 @@
           </div>
           
           <!-- Project 2 (Placeholder) -->
-          <div class="col-md-6 col-lg-4">
+          <div class="col-md-6 col-lg-4 mb-4">
             <div class="project-card">
               <img src="https://via.placeholder.com/600x400?text=Game+Project" alt="Game Project" class="card-img-top">
               <div class="card-body">
@@ -81,7 +82,7 @@
           </div>
           
           <!-- Project 3 (Placeholder) -->
-          <div class="col-md-6 col-lg-4">
+          <div class="col-md-6 col-lg-4 mb-4">
             <div class="project-card">
               <img src="https://via.placeholder.com/600x400?text=Web+Project" alt="Web Development Project" class="card-img-top">
               <div class="card-body">
@@ -97,8 +98,6 @@
               </div>
             </div>
           </div>
-          
-          <!-- Add more project cards as needed -->
         </div>
       </div>
     </section>

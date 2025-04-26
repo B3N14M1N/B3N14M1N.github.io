@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Voxel System",
+    "description": "A system for creating, managing, and rendering voxel-based environments and objects. Built with performance and extensibility in mind.",
+    "image": "https://via.placeholder.com/600x400?text=Voxel+System",
+    "year": "2024",
+    "demoUrl": "documentation.html",
+    "demoText": "Documentation",
+    "repoUrl": "https://github.com/b3n14m1n/Voxel-System",
+    "tags": ["Game Development", "C#", "Unity"]
+  },
+  {
+    "id": 2,
+    "title": "Game Development Project",
+    "description": "A 2D/3D game built with Unity, featuring interesting mechanics and innovative gameplay. Includes procedural generation and custom physics.",
+    "image": "https://via.placeholder.com/600x400?text=Game+Project",
+    "year": "2023",
+    "demoUrl": "#",
+    "demoText": "Play Online",
+    "repoUrl": "#",
+    "tags": ["Gaming", "Unity", "C#"]
+  },
+  {
+    "id": 3,
+    "title": "Web Development Project",
+    "description": "A responsive website built with modern web technologies like HTML5, CSS3, and JavaScript. Features clean design and smooth user experience.",
+    "image": "https://via.placeholder.com/600x400?text=Web+Project",
+    "year": "2023",
+    "demoUrl": "#",
+    "demoText": "Live Demo",
+    "repoUrl": "#",
+    "tags": ["Web", "JavaScript", "CSS"]
+  },
+  {
+    "id": 4,
+    "title": "Personal Portfolio",
+    "description": "This very website! A responsive portfolio showcasing my projects and skills, featuring dynamic theme switching and content loading.",
+    "image": "https://via.placeholder.com/600x400?text=Portfolio+Site",
+    "year": "2024",
+    "repoUrl": "https://github.com/b3n14m1n/b3n14m1n.github.io",
+    "tags": ["Web", "JavaScript", "Bootstrap"]
+  }
+]
