@@ -22,6 +22,9 @@ class DocumentationManager {
         
         // URL parameters
         this.urlParams = new URLSearchParams(window.location.search);
+        
+        // Flag to track if scroll tracking is active
+        this.scrollTrackingActive = false;
     }
     
     init() {
@@ -81,6 +84,12 @@ class DocumentationManager {
         
         // Generate documentation cards
         this.generateDocumentationCards();
+        
+        // Remove scroll tracking when going back to selector
+        if (this.scrollTrackingActive) {
+            window.removeEventListener('scroll', this.handleScroll);
+            this.scrollTrackingActive = false;
+        }
     }
     
     generateDocumentationCards() {
@@ -159,6 +168,9 @@ class DocumentationManager {
         
         // Generate content
         this.generateDocumentationContent(doc);
+        
+        // Setup scroll tracking for active section
+        this.setupScrollTracking();
         
         // Scroll to section if specified
         if (sectionId) {
@@ -361,7 +373,61 @@ class DocumentationManager {
         }
     }
     
-    setActiveLink(sectionId) {
+    setupScrollTracking() {
+        // Remove any existing scroll listener to prevent duplicates
+        if (this.scrollTrackingActive) {
+            window.removeEventListener('scroll', this.handleScroll);
+            this.scrollTrackingActive = false;
+        }
+        
+        // Create a bound version of the handleScroll method
+        this.handleScroll = this.updateActiveSection.bind(this);
+        
+        // Add scroll event listener
+        window.addEventListener('scroll', this.handleScroll);
+        this.scrollTrackingActive = true;
+    }
+    
+    updateActiveSection() {
+        // Get all documentation sections
+        const sections = document.querySelectorAll('.doc-content');
+        let currentSectionId = null;
+        
+        // Find the section that's currently most visible in the viewport
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top;
+            const sectionHeight = rect.height;
+            const viewportHeight = window.innerHeight;
+            
+            // Calculate how much of the section is visible in the viewport
+            const visibleTop = Math.max(0, sectionTop);
+            const visibleBottom = Math.min(viewportHeight, sectionTop + sectionHeight);
+            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+            
+            // If at least 30% of section height or 200px is visible and it's near the top of viewport
+            if ((visibleHeight > sectionHeight * 0.3 || visibleHeight > 200) && sectionTop < viewportHeight / 2) {
+                currentSectionId = section.id;
+            }
+        });
+        
+        // Also check subsections
+        const subsections = document.querySelectorAll('.doc-subsection');
+        subsections.forEach(subsection => {
+            const rect = subsection.getBoundingClientRect();
+            // Similar logic as above but with stricter viewport position
+            if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+                currentSectionId = subsection.id;
+            }
+        });
+        
+        // If found a visible section, update the active link
+        if (currentSectionId) {
+            this.setActiveLink(currentSectionId, false);
+        }
+    }
+    
+    setActiveLink(sectionId, updateUrl = true) {
         // Remove active class from all links
         document.querySelectorAll('#doc-toc-list .list-group-item').forEach(link => {
             link.classList.remove('active');
@@ -371,6 +437,25 @@ class DocumentationManager {
         const activeLink = document.querySelector(`#doc-toc-list [data-section-id="${sectionId}"]`);
         if (activeLink) {
             activeLink.classList.add('active');
+            
+            // Update URL if needed and if this is a user-initiated action (not from scrolling)
+            if (updateUrl && this.currentDoc) {
+                // Parse section id to determine if it's a subsection
+                const parts = sectionId.split('-');
+                let url;
+                
+                if (parts.length > 1) {
+                    // It's a subsection
+                    const mainSection = parts[0];
+                    const subsection = parts.slice(1).join('-');
+                    url = `?doc=${this.currentDoc}&section=${mainSection}&subsection=${subsection}`;
+                } else {
+                    // It's a main section
+                    url = `?doc=${this.currentDoc}&section=${sectionId}`;
+                }
+                
+                history.replaceState({docId: this.currentDoc, sectionId: sectionId}, '', url);
+            }
         }
     }
     
