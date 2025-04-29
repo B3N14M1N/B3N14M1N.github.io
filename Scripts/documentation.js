@@ -6,10 +6,8 @@ class DocumentationManager {
         // Elements
         this.docTitle = document.getElementById('documentation-title');
         this.docDescription = document.getElementById('documentation-description');
-        this.docSelector = document.getElementById('documentation-selector');
         this.docContent = document.getElementById('documentation-content');
         this.docTocList = document.getElementById('doc-toc-list');
-        this.docCards = document.getElementById('documentation-cards');
         this.sidebar = document.getElementById('doc-sidebar');
         this.sidebarToggle = document.getElementById('sidebar-toggle');
         this.mobileToggle = document.getElementById('doc-mobile-toggle');
@@ -36,8 +34,8 @@ class DocumentationManager {
             // Load the requested documentation
             this.loadDocumentation(docId, sectionId);
         } else {
-            // Show documentation selector
-            this.showDocumentationSelector();
+            // If no valid documentation ID is provided, redirect to the selector page
+            window.location.href = 'documentation-selector.html';
         }
         
         // Initialize event listeners
@@ -51,69 +49,12 @@ class DocumentationManager {
             const docId = params.get('doc');
             const sectionId = params.get('section');
             
-            if (docId) {
+            if (docId && documentationData[docId]) {
                 this.loadDocumentation(docId, sectionId, false);
             } else {
-                this.showDocumentationSelector();
+                // If no valid documentation ID is provided, redirect to the selector page
+                window.location.href = 'documentation-selector.html';
             }
-        });
-    }
-    
-    showDocumentationSelector() {
-        // Reset title and description
-        this.docTitle.textContent = 'Documentation';
-        this.docDescription.textContent = 'Select a documentation set to begin';
-        
-        // Show selector, hide content
-        this.docSelector.style.display = 'block';
-        this.docContent.innerHTML = '';
-        this.docTocList.innerHTML = '';
-        
-        // Reset content wrapper padding (no need for sidebar space)
-        if (this.contentWrapper) {
-            this.contentWrapper.classList.remove('sidebar-collapsed');
-            // Remove any padding meant for the sidebar
-            this.contentWrapper.style.paddingLeft = '1rem';
-        }
-        
-        if (this.docHeader) {
-            this.docHeader.classList.remove('sidebar-collapsed');
-            // Reset header padding as well
-            this.docHeader.style.paddingLeft = '1rem';
-        }
-        
-        // Generate documentation cards
-        this.generateDocumentationCards();
-        
-        // Remove scroll tracking when going back to selector
-        if (this.scrollTrackingActive) {
-            window.removeEventListener('scroll', this.handleScroll);
-            this.scrollTrackingActive = false;
-        }
-    }
-    
-    generateDocumentationCards() {
-        // Clear existing cards
-        this.docCards.innerHTML = '';
-        
-        // Create a card for each documentation set
-        documentationData.documentationIndex.forEach(doc => {
-            const card = document.createElement('div');
-            card.className = 'col-md-6 col-lg-4';
-            card.innerHTML = `
-                <div class="card h-100">
-                    <img src="${doc.thumbnail}" class="card-img-top" alt="${doc.title}">
-                    <div class="card-body">
-                        <h5 class="card-title">${doc.title}</h5>
-                        <p class="card-text">${doc.description}</p>
-                        <div class="d-flex flex-wrap gap-2 mb-3">
-                            ${doc.tags.map(tag => `<span class="badge bg-primary">${tag}</span>`).join('')}
-                        </div>
-                        <a href="?doc=${doc.id}" class="btn btn-primary">Open Documentation</a>
-                    </div>
-                </div>
-            `;
-            this.docCards.appendChild(card);
         });
     }
     
@@ -121,8 +62,8 @@ class DocumentationManager {
         // Get documentation data
         const doc = documentationData[docId];
         if (!doc) {
-            // If documentation doesn't exist, show selector
-            this.showDocumentationSelector();
+            // If documentation doesn't exist, redirect to selector
+            window.location.href = 'documentation-selector.html';
             return;
         }
         
@@ -133,33 +74,16 @@ class DocumentationManager {
         this.docTitle.textContent = doc.title;
         this.docDescription.textContent = doc.description;
         
-        // Hide selector, show content
-        this.docSelector.style.display = 'none';
-        
-        // Show sidebar and its toggle button when a documentation is loaded
-        if (this.sidebar) this.sidebar.style.display = 'block';
-        if (this.sidebarToggle) this.sidebarToggle.style.display = 'flex';
-        if (this.mobileToggle) this.mobileToggle.style.display = 'flex';
-        
-        // Reset content wrapper padding for sidebar
-        if (this.contentWrapper) {
-            this.contentWrapper.style.paddingLeft = '';  // Remove inline style to use CSS default
+        // Check for saved sidebar state
+        const savedSidebarState = localStorage.getItem('sidebarCollapsed');
+        if (savedSidebarState === 'true') {
+            this.contentWrapper.classList.add('sidebar-collapsed');
+            this.docHeader.classList.add('sidebar-collapsed');
+            this.sidebar.classList.add('collapsed');
             
-            // Check for saved sidebar state
-            const savedSidebarState = localStorage.getItem('sidebarCollapsed');
-            if (savedSidebarState === 'true') {
-                this.contentWrapper.classList.add('sidebar-collapsed');
-            }
-        }
-        
-        // Update header padding for sidebar
-        if (this.docHeader) {
-            this.docHeader.style.paddingLeft = '';  // Remove inline style to use CSS default
-            
-            // Check for saved sidebar state
-            const savedSidebarState = localStorage.getItem('sidebarCollapsed');
-            if (savedSidebarState === 'true') {
-                this.docHeader.classList.add('sidebar-collapsed');
+            if (document.getElementById('sidebar-icon')) {
+                document.getElementById('sidebar-icon').classList.remove('bi-chevron-left');
+                document.getElementById('sidebar-icon').classList.add('bi-chevron-right');
             }
         }
         
@@ -204,7 +128,7 @@ class DocumentationManager {
         
         // Add a "Back to Documentation" link
         const backLink = document.createElement('a');
-        backLink.href = 'documentation.html';
+        backLink.href = 'documentation-selector.html';
         backLink.className = 'list-group-item list-group-item-action d-flex align-items-center';
         backLink.innerHTML = '<i class="bi bi-arrow-left-circle me-2"></i> All Documentation';
         this.docTocList.appendChild(backLink);
@@ -542,18 +466,6 @@ function setupSidebar() {
         }
     }
     
-    // Check saved sidebar state
-    const savedSidebarState = localStorage.getItem('sidebarCollapsed');
-    if (savedSidebarState === 'true') {
-        sidebar.classList.add('collapsed');
-        contentWrapper.classList.add('sidebar-collapsed');
-        if (docHeader) docHeader.classList.add('sidebar-collapsed');
-        if (sidebarIcon) {
-            sidebarIcon.classList.remove('bi-chevron-left');
-            sidebarIcon.classList.add('bi-chevron-right');
-        }
-    }
-    
     // Toggle sidebar on mobile function
     function toggleMobileSidebar() {
         sidebar.classList.toggle('show');
@@ -590,7 +502,7 @@ function setupSidebar() {
 
 // Initialize everything when DOM content is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Only run this code on the documentation page
+    // Only run this code on the documentation page (not the selector)
     if (window.location.pathname.includes('documentation.html')) {
         // Initialize code highlighting if hljs is available
         if (typeof hljs !== 'undefined') {

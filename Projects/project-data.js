@@ -6,7 +6,7 @@ const projectsData = [
         "description": "A system for creating, managing, and rendering voxel-based environments and objects. Built with performance and extensibility in mind.",
         "image": "https://via.placeholder.com/600x400?text=Voxel+System",
         "year": "2024",
-        "demoUrl": "documentation.html",
+        "demoUrl": "documentation.html?doc=voxel-system",
         "demoText": "Documentation",
         "repoUrl": "https://github.com/b3n14m1n/Voxel-System",
         "tags": ["Game Development", "C#", "Unity"],

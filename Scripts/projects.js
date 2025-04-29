@@ -208,36 +208,47 @@ document.addEventListener('DOMContentLoaded', function () {
         return colDiv;
     }
 
+    // Function to get currently visible projects
+    function getVisibleProjects() {
+        const projectCols = document.querySelectorAll('.project-col');
+        const visibleProjects = [];
+
+        projectCols.forEach(col => {
+            if (col.style.display !== 'none') {
+                visibleProjects.push(parseInt(col.getAttribute('data-index')));
+            }
+        });
+
+        return visibleProjects;
+    }
+
     // Setup project filtering and navigation
     function setupProjectControls(projectCount) {
         const scrollLeftBtn = document.getElementById('scroll-left');
         const scrollRightBtn = document.getElementById('scroll-right');
         const filterButtons = document.querySelectorAll('.project-categories .btn');
 
-        // Track current active project
-        let currentProjectIndex = 0;
-
         // Navigation buttons
         if (scrollLeftBtn && scrollRightBtn) {
             scrollLeftBtn.addEventListener('click', () => {
                 // Find the previous visible project
                 const visibleProjects = getVisibleProjects();
-                const currentPosition = visibleProjects.indexOf(currentProjectIndex);
+                const currentPosition = visibleProjects.indexOf(globalCurrentProjectIndex);
 
                 if (currentPosition > 0) {
-                    currentProjectIndex = visibleProjects[currentPosition - 1];
-                    navigateToProject(currentProjectIndex);
+                    const prevIndex = visibleProjects[currentPosition - 1];
+                    navigateToProject(prevIndex);
                 }
             });
 
             scrollRightBtn.addEventListener('click', () => {
                 // Find the next visible project
                 const visibleProjects = getVisibleProjects();
-                const currentPosition = visibleProjects.indexOf(currentProjectIndex);
+                const currentPosition = visibleProjects.indexOf(globalCurrentProjectIndex);
 
                 if (currentPosition < visibleProjects.length - 1) {
-                    currentProjectIndex = visibleProjects[currentPosition + 1];
-                    navigateToProject(currentProjectIndex);
+                    const nextIndex = visibleProjects[currentPosition + 1];
+                    navigateToProject(nextIndex);
                 }
             });
         }
@@ -279,25 +290,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Navigate to first visible project in the filtered set
                     if (visibleProjects.length > 0) {
-                        currentProjectIndex = visibleProjects[0];
-                        navigateToProject(currentProjectIndex);
+                        navigateToProject(visibleProjects[0]);
                     }
                 });
             });
-        }
-
-        // Function to get currently visible projects
-        function getVisibleProjects() {
-            const projectCols = document.querySelectorAll('.project-col');
-            const visibleProjects = [];
-
-            projectCols.forEach(col => {
-                if (col.style.display !== 'none') {
-                    visibleProjects.push(parseInt(col.getAttribute('data-index')));
-                }
-            });
-
-            return visibleProjects;
         }
 
         // Add keyboard navigation
@@ -334,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // After setting up all controls, center the first project
-        // This ensures that even the first project is centered on page load
         setTimeout(() => {
             const visibleProjects = getVisibleProjects();
             if (visibleProjects.length > 0) {
