@@ -17,86 +17,71 @@
 
 <body data-bs-theme="dark">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="../index.html">Beniamin Cioban</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="../index.html">Home</a>
-                    <a class="nav-link active" href="projects.html">Projects</a>
-                    <a class="nav-link" href="documentation-selector.html">Documentation</a>
-                    <button class="btn theme-toggle-btn ms-2" id="theme-toggle">
-                        <i class="bi bi-moon-fill" id="theme-icon"></i>
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main content wrapper to push footer down -->
+    <div class="main-content">
+        <!-- Header Section -->
+        <section class="py-5 text-center">
+            <div class="container">
+                <h1 class="display-4 fw-bold">My Projects</h1>
+                <p class="lead">Here's a collection of projects I've worked on.</p>
+            </div>
+        </section>
+
+
+        <!-- Projects Section with Horizontal Navigation -->
+        <section class="py-5">
+            <!-- Projects Navigation -->
+            <section class="mb-4">
+                <div class="container">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="project-categories text-center">
+                            <!-- Category buttons will be dynamically loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="container position-relative projects-view-container overflow-hidden">
+                <!-- Left scroll button with fade overlay -->
+                <div class="scroll-btn-wrapper start-0">
+                    <div class="scroll-fade-overlay start-0"></div>
+                    <button class="btn btn-outline-primary scroll-btn" id="scroll-left">
+                        <i class="bi bi-arrow-left"></i>
                     </button>
                 </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Header Section -->
-    <section class="py-5 text-center">
-        <div class="container">
-            <h1 class="display-4 fw-bold">My Projects</h1>
-            <p class="lead">Here's a collection of projects I've worked on.</p>
-        </div>
-    </section>
-
-
-    <!-- Projects Section with Horizontal Navigation -->
-    <section class="py-5">
-        <!-- Projects Navigation -->
-        <section class="mb-4">
-            <div class="container">
-                <div class="d-flex justify-content-center align-items-center">
-                    <div class="project-categories text-center">
-                        <!-- Category buttons will be dynamically loaded here -->
+                <div class="projects-container px-5">
+                    <div class="row flex-nowrap" id="projects-container">
+                        <!-- Projects will be loaded dynamically from project-data.js -->
+                        <!-- If JS fails to load, these fallback projects will be shown -->
                     </div>
+                </div>
+
+                <!-- Right scroll button with fade overlay -->
+                <div class="scroll-btn-wrapper end-0">
+                    <div class="scroll-fade-overlay end-0"></div>
+                    <button class="btn btn-outline-primary scroll-btn" id="scroll-right">
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Progress indicator -->
+                <div class="project-navigation-indicators">
+                    <!-- Will be populated dynamically -->
                 </div>
             </div>
         </section>
-        <div class="container position-relative projects-view-container overflow-hidden">
-            <!-- Left scroll button with fade overlay -->
-            <div class="scroll-btn-wrapper start-0">
-                <div class="scroll-fade-overlay start-0"></div>
-                <button class="btn btn-outline-primary scroll-btn" id="scroll-left">
-                    <i class="bi bi-arrow-left"></i>
-                </button>
-            </div>
 
-            <div class="projects-container px-5">
-                <div class="row flex-nowrap" id="projects-container">
-                    <!-- Projects will be loaded dynamically from project-data.js -->
-                    <!-- If JS fails to load, these fallback projects will be shown -->
-                </div>
+        <!-- Call To Action -->
+        <section class="py-5 bg-light text-center">
+            <div class="container">
+                <h2>Interested in collaborating?</h2>
+                <p class="lead">I'm always open to discussing new projects or opportunities.</p>
+                <a href="mailto:beniamin.cioban@student.usv.ro" class="btn btn-primary mt-3">Get in Touch</a>
             </div>
-
-            <!-- Right scroll button with fade overlay -->
-            <div class="scroll-btn-wrapper end-0">
-                <div class="scroll-fade-overlay end-0"></div>
-                <button class="btn btn-outline-primary scroll-btn" id="scroll-right">
-                    <i class="bi bi-arrow-right"></i>
-                </button>
-            </div>
-
-            <!-- Progress indicator -->
-            <div class="project-navigation-indicators">
-                <!-- Will be populated dynamically -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Call To Action -->
-    <section class="py-5 bg-light text-center">
-        <div class="container">
-            <h2>Interested in collaborating?</h2>
-            <p class="lead">I'm always open to discussing new projects or opportunities.</p>
-            <a href="mailto:beniamin.cioban@student.usv.ro" class="btn btn-primary mt-3">Get in Touch</a>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Footer -->
     <div id="footer-placeholder"></div>

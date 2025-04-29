@@ -583,30 +583,81 @@ class DocumentationManager {
             // Add click event to copy the code
             copyButton.addEventListener('click', () => {
                 const code = codeBlock.querySelector('code');
-                const textToCopy = code.innerText;
+                const textToCopy = code.innerText || code.textContent;
                 
-                // Use the Clipboard API to copy text
-                navigator.clipboard.writeText(textToCopy)
-                    .then(() => {
-                        // Give user feedback that code was copied
-                        copyButton.innerHTML = '<i class="bi bi-clipboard-check"></i> Copied!';
-                        copyButton.classList.add('copied');
-                        
-                        // Reset button after 2 seconds
-                        setTimeout(() => {
-                            copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
-                            copyButton.classList.remove('copied');
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('Could not copy text: ', err);
-                        copyButton.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Error!';
-                        
-                        // Reset button after 2 seconds
-                        setTimeout(() => {
-                            copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
-                        }, 2000);
-                    });
+                let copySuccess = false;
+                
+                // Try using the Clipboard API first (modern browsers)
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => {
+                            copySuccess = true;
+                            showCopySuccess();
+                        })
+                        .catch(err => {
+                            console.error('Error with Clipboard API:', err);
+                            fallbackCopyMethod();
+                        });
+                } else {
+                    // Fallback for browsers without Clipboard API
+                    fallbackCopyMethod();
+                }
+                
+                // Fallback copy method using textarea
+                function fallbackCopyMethod() {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    
+                    // Make the textarea out of viewport
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    textArea.style.top = '-999999px';
+                    document.body.appendChild(textArea);
+                    
+                    // Focus and select the text
+                    textArea.focus();
+                    textArea.select();
+                    
+                    try {
+                        // Execute the copy command
+                        const successful = document.execCommand('copy');
+                        copySuccess = successful;
+                        if (successful) {
+                            showCopySuccess();
+                        } else {
+                            showCopyError('Copy command failed');
+                        }
+                    } catch (err) {
+                        console.error('Fallback copy error:', err);
+                        showCopyError('Copy not supported');
+                    }
+                    
+                    // Remove the textarea
+                    document.body.removeChild(textArea);
+                }
+                
+                // Show success feedback
+                function showCopySuccess() {
+                    copyButton.innerHTML = '<i class="bi bi-clipboard-check"></i> Copied!';
+                    copyButton.classList.add('copied');
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        copyButton.classList.remove('copied');
+                    }, 2000);
+                }
+                
+                // Show error feedback
+                function showCopyError(errorMsg) {
+                    copyButton.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Error!';
+                    console.error('Copy failed:', errorMsg);
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                    }, 2000);
+                }
             });
         });
     }

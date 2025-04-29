@@ -20,75 +20,60 @@
 
 <body data-bs-theme="dark">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="../index.html">Beniamin Cioban</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="../index.html">Home</a>
-                    <a class="nav-link" href="projects.html">Projects</a>
-                    <a class="nav-link active" href="documentation-selector.html">Documentation</a>
-                    <button class="btn theme-toggle-btn ms-2" id="theme-toggle">
-                        <i class="bi bi-moon-fill" id="theme-icon"></i>
-                    </button>
-                </div>
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main content wrapper to push footer down -->
+    <div class="main-content">
+        <!-- Documentation Header -->
+        <section class="py-5 text-center doc-header sidebar-collapsed" id="doc-header">
+            <div class="container">
+                <h1 class="display-4 fw-bold" id="documentation-title">Documentation</h1>
+                <p class="lead" id="documentation-description"></p>
             </div>
-        </div>
-    </nav>
+        </section>
 
-    <!-- Documentation Header -->
-    <section class="py-5 text-center doc-header sidebar-collapsed" id="doc-header">
-        <div class="container">
-            <h1 class="display-4 fw-bold" id="documentation-title">Documentation</h1>
-            <p class="lead" id="documentation-description"></p>
-        </div>
-    </section>
-
-    <!-- Documentation Content -->
-    <section class="py-5">
-        <div class="container-fluid px-0">
-            <div class="doc-wrapper">
-                <!-- Documentation Sidebar -->
-                <div class="doc-sidebar collapsed" id="doc-sidebar">
-                    <!-- Sidebar Content -->
-                    <div class="doc-toc">
-                        <h5>Table of Contents</h5>
-                        <div class="list-group" id="doc-toc-list">
-                            <!-- The table of contents will be populated dynamically -->
+        <!-- Documentation Content -->
+        <section class="py-5">
+            <div class="container-fluid px-0">
+                <div class="doc-wrapper">
+                    <!-- Documentation Sidebar -->
+                    <div class="doc-sidebar collapsed" id="doc-sidebar">
+                        <!-- Sidebar Content -->
+                        <div class="doc-toc">
+                            <h5>Table of Contents</h5>
+                            <div class="list-group" id="doc-toc-list">
+                                <!-- The table of contents will be populated dynamically -->
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Toggle Button -->
-                <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle Sidebar">
-                    <i class="bi bi-chevron-right" id="sidebar-icon"></i>
-                </button>
+                    <!-- Toggle Button -->
+                    <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle Sidebar">
+                        <i class="bi bi-chevron-right" id="sidebar-icon"></i>
+                    </button>
 
-                <!-- Mobile Toggle Button -->
-                <button class="doc-mobile-toggle d-lg-none" id="doc-mobile-toggle">
-                    <i class="bi bi-list"></i>
-                </button>
+                    <!-- Mobile Toggle Button -->
+                    <button class="doc-mobile-toggle d-lg-none" id="doc-mobile-toggle">
+                        <i class="bi bi-list"></i>
+                    </button>
 
-                <!-- Documentation Content -->
-                <div class="doc-content-wrapper sidebar-collapsed" id="doc-content-wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <!-- Documentation content sections -->
-                                <div id="documentation-content">
-                                    <!-- Documentation content will be loaded here dynamically -->
+                    <!-- Documentation Content -->
+                    <div class="doc-content-wrapper sidebar-collapsed" id="doc-content-wrapper">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- Documentation content sections -->
+                                    <div id="documentation-content">
+                                        <!-- Documentation content will be loaded here dynamically -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Footer -->
     <div id="footer-placeholder"></div>

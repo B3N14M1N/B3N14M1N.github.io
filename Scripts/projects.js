@@ -7,19 +7,19 @@ document.addEventListener('DOMContentLoaded', function () {
     // Only run this code on the projects page
     if (window.location.pathname.includes('projects.html')) {
         // We'll now wait for the projects data to be loaded
-        document.addEventListener('projectsDataLoaded', function() {
+        document.addEventListener('projectsDataLoaded', function () {
             loadProjects();
         });
-        
+
         // If data is already loaded (cached), initialize immediately
         if (projectsData && projectsData.length > 0) {
             loadProjects();
         }
-        
+
         // Default empty state - hide controls and show message
         setupEmptyState();
     }
-    
+
     // Function to setup empty state
     function setupEmptyState() {
         const projectsContainer = document.getElementById('projects-container');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const scrollButtons = document.querySelectorAll('.scroll-btn-wrapper');
         const navigationIndicators = document.querySelector('.project-navigation-indicators');
         const categoriesContainer = document.querySelector('.project-categories');
-        
+
         if (projectsContainer) {
             // Add empty state message
             projectsContainer.innerHTML = `
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p class="text-muted">If projects don't appear, there might be an issue loading the data.</p>
                 </div>
             `;
-            
+
             // Hide scroll buttons and indicators until projects load
             scrollButtons.forEach(btn => btn.style.display = 'none');
             if (navigationIndicators) navigationIndicators.style.display = 'none';
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Function to load projects using the external projectsData variable
+    // Function to load projects using -tvhiee wexternal projectsData variable
     function loadProjects() {
         // Use the projects from project-data.js
         const projects = projectsData;
@@ -66,20 +66,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p class="text-muted">There are currently no projects to display.</p>
                     </div>
                 `;
-                
+
                 // Hide scroll buttons and indicators
                 scrollButtons.forEach(btn => btn.style.display = 'none');
                 if (navigationIndicators) navigationIndicators.style.display = 'none';
                 return;
             }
-            
+
             // Clear existing content
             projectsContainer.innerHTML = '';
-            
+
             // Show scroll buttons and indicators
             scrollButtons.forEach(btn => btn.style.display = 'flex');
             if (navigationIndicators) navigationIndicators.style.display = 'flex';
-            
+
             // Add a spacer element at the beginning (won't be counted in navigation logic)
             const startSpacer = document.createElement('div');
             startSpacer.className = 'spacer-card';
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const projectCol = createProjectCard(project, index);
                 projectsContainer.appendChild(projectCol);
             });
-            
+
             // Add a spacer element at the end (won't be counted in navigation logic)
             const endSpacer = document.createElement('div');
             endSpacer.className = 'spacer-card';
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function setActiveProject(index) {
         // Update the global tracking variable
         globalCurrentProjectIndex = index;
-        
+
         const projectCols = document.querySelectorAll('.project-col'); // Only targets actual project columns, not spacers
         const indicators = document.querySelectorAll('.indicator-dot');
         const projectsContainer = document.querySelector('.projects-container');
@@ -283,35 +283,38 @@ document.addEventListener('DOMContentLoaded', function () {
         return visibleProjects;
     }
 
+    function onScrollLeftClick() {
+        const visibleProjects = getVisibleProjects();
+        const currentPosition = visibleProjects.indexOf(globalCurrentProjectIndex);
+        if (currentPosition > 0) {
+            navigateToProject(visibleProjects[currentPosition - 1]);
+        }
+    }
+
+    function onScrollRightClick() {
+        const visibleProjects = getVisibleProjects();
+        const currentPosition = visibleProjects.indexOf(globalCurrentProjectIndex);
+        if (currentPosition < visibleProjects.length - 1) {
+            navigateToProject(visibleProjects[currentPosition + 1]);
+        }
+    }
+
     // Setup project filtering and navigation
     function setupProjectControls(projectCount) {
         const scrollLeftBtn = document.getElementById('scroll-left');
         const scrollRightBtn = document.getElementById('scroll-right');
         const filterButtons = document.querySelectorAll('.project-categories .btn');
+        const projectsContainer = document.querySelector('.projects-container');
 
         // Navigation buttons
         if (scrollLeftBtn && scrollRightBtn) {
-            scrollLeftBtn.addEventListener('click', () => {
-                // Find the previous visible project
-                const visibleProjects = getVisibleProjects();
-                const currentPosition = visibleProjects.indexOf(globalCurrentProjectIndex);
+            // Remove previous bindings (if any):
+            scrollLeftBtn.removeEventListener('click', onScrollLeftClick);
+            scrollRightBtn.removeEventListener('click', onScrollRightClick);
 
-                if (currentPosition > 0) {
-                    const prevIndex = visibleProjects[currentPosition - 1];
-                    navigateToProject(prevIndex);
-                }
-            });
-
-            scrollRightBtn.addEventListener('click', () => {
-                // Find the next visible project
-                const visibleProjects = getVisibleProjects();
-                const currentPosition = visibleProjects.indexOf(globalCurrentProjectIndex);
-
-                if (currentPosition < visibleProjects.length - 1) {
-                    const nextIndex = visibleProjects[currentPosition + 1];
-                    navigateToProject(nextIndex);
-                }
-            });
+            // Add fresh bindings:
+            scrollLeftBtn.addEventListener('click', onScrollLeftClick);
+            scrollRightBtn.addEventListener('click', onScrollRightClick);
         }
 
         // Project filtering
@@ -357,38 +360,42 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Add keyboard navigation
-        document.addEventListener('keydown', function (event) {
+        const onDocumentKeyDown = (event) => {
             if (event.key === 'ArrowLeft') {
-                // Simulate clicking the left scroll button
                 scrollLeftBtn.click();
             } else if (event.key === 'ArrowRight') {
-                // Simulate clicking the right scroll button
                 scrollRightBtn.click();
             }
-        });
+        }
+
+        // Add keyboard navigation
+        document.removeEventListener('keydown', onDocumentKeyDown);
+        document.addEventListener('keydown', onDocumentKeyDown);
 
         // Handle touch events for swipe
         let touchStartX = 0;
         let touchEndX = 0;
 
-        const handleSwipe = () => {
-            if (touchStartX - touchEndX > 70) { // Swiped left
+        const onTouchStart = (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }
+
+        const onTouchEnd = (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            // swipe threshold of 70px
+            if (touchStartX - touchEndX > 70) {
                 scrollRightBtn.click();
-            }
-            if (touchEndX - touchStartX > 70) { // Swiped right
+            } else if (touchEndX - touchStartX > 70) {
                 scrollLeftBtn.click();
             }
-        };
+        }
 
-        document.querySelector('.projects-container').addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.querySelector('.projects-container').addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
+        if (projectsContainer) {
+            projectsContainer.removeEventListener('touchstart', onTouchStart);
+            projectsContainer.removeEventListener('touchend', onTouchEnd);
+            projectsContainer.addEventListener('touchstart', onTouchStart);
+            projectsContainer.addEventListener('touchend', onTouchEnd);
+        }
 
         // After setting up all controls, center the first project
         setTimeout(() => {
@@ -397,12 +404,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 navigateToProject(visibleProjects[0]);
             }
         }, 100);
-        
+
         // Add window resize handler to recenter the active project when window resizes
         let resizeTimeout;
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(function() {
+            resizeTimeout = setTimeout(function () {
                 // Re-center the currently active project
                 navigateToProject(globalCurrentProjectIndex);
             }, 150); // Small debounce delay to avoid excessive recalculation

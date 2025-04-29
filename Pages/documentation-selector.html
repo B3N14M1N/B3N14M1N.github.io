@@ -18,50 +18,35 @@
 
 <body data-bs-theme="dark">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="../index.html">Beniamin Cioban</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="../index.html">Home</a>
-                    <a class="nav-link" href="projects.html">Projects</a>
-                    <a class="nav-link active" href="documentation-selector.html">Documentation</a>
-                    <button class="btn theme-toggle-btn ms-2" id="theme-toggle">
-                        <i class="bi bi-moon-fill" id="theme-icon"></i>
-                    </button>
-                </div>
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main content wrapper to push footer down -->
+    <div class="main-content">
+        <!-- Documentation Header -->
+        <section class="py-5 text-center">
+            <div class="container">
+                <h1 class="display-4 fw-bold">Documentation</h1>
+                <p class="lead">Select a documentation set to begin</p>
             </div>
-        </div>
-    </nav>
+        </section>
 
-    <!-- Documentation Header -->
-    <section class="py-5 text-center">
-        <div class="container">
-            <h1 class="display-4 fw-bold">Documentation</h1>
-            <p class="lead">Select a documentation set to begin</p>
-        </div>
-    </section>
-
-    <!-- Documentation Selection -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <!-- Documentation selection cards -->
-                    <div id="documentation-selector" class="mb-5">
-                        <h2 class="mb-4">Available Documentation</h2>
-                        <div class="row g-4" id="documentation-cards">
-                            <!-- Documentation cards will be loaded here -->
+        <!-- Documentation Selection -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Documentation selection cards -->
+                        <div id="documentation-selector" class="mb-5">
+                            <h2 class="mb-4">Available Documentation</h2>
+                            <div class="row g-4" id="documentation-cards">
+                                <!-- Documentation cards will be loaded here -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Footer -->
     <div id="footer-placeholder"></div>
