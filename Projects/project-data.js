@@ -1,49 +1,48 @@
-// Project data for the portfolio website
-const projectsData = [
-    {
-        "id": 1,
-        "title": "Voxel System",
-        "description": "A system for creating, managing, and rendering voxel-based environments and objects. Built with performance and extensibility in mind.",
-        "image": "https://via.placeholder.com/600x400?text=Voxel+System",
-        "year": "2024",
-        "demoUrl": "documentation.html?doc=voxel-system",
-        "demoText": "Documentation",
-        "repoUrl": "https://github.com/b3n14m1n/Voxel-System",
-        "tags": ["Game Development", "C#", "Unity"],
-        "category": "Game Development"
-    },
-    {
-        "id": 2,
-        "title": "Game Development Project",
-        "description": "A 2D/3D game built with Unity, featuring interesting mechanics and innovative gameplay. Includes procedural generation and custom physics.",
-        "image": "https://via.placeholder.com/600x400?text=Game+Project",
-        "year": "2023",
-        "demoUrl": "#",
-        "demoText": "Play Online",
-        "repoUrl": "#",
-        "tags": ["Gaming", "Unity", "C#"],
-        "category": "Game Development"
-    },
-    {
-        "id": 3,
-        "title": "Web Development Project",
-        "description": "A responsive website built with modern web technologies like HTML5, CSS3, and JavaScript. Features clean design and smooth user experience.",
-        "image": "https://via.placeholder.com/600x400?text=Web+Project",
-        "year": "2023",
-        "demoUrl": "#",
-        "demoText": "Live Demo",
-        "repoUrl": "#",
-        "tags": ["Web", "JavaScript", "CSS"],
-        "category": "Web"
-    },
-    {
-        "id": 4,
-        "title": "Personal Portfolio",
-        "description": "This very website! A responsive portfolio showcasing my projects and skills, featuring dynamic theme switching and content loading.",
-        "image": "https://via.placeholder.com/600x400?text=Portfolio+Site",
-        "year": "2024",
-        "repoUrl": "https://github.com/b3n14m1n/b3n14m1n.github.io",
-        "tags": ["Web", "JavaScript", "Bootstrap"],
-        "category": "Web"
+// Project data loader for the portfolio website
+
+// Create an empty array to hold project data
+let projectsData = [];
+
+/**
+ * Get the appropriate base path for project data based on the current page location
+ * @returns {string} The base path to use for fetch requests
+ */
+function getProjectBasePath() {
+    // Check if we're on a page in the Pages directory (needs to go up one level)
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('/Pages/')) {
+        return '../';
     }
-];
+    return '';
+}
+
+// Function to fetch projects data
+async function loadProjectsData() {
+    try {
+        const basePath = getProjectBasePath();
+        const response = await fetch(`${basePath}Projects/Data/projects.json`);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to load projects data: ${response.status}`);
+        }
+        
+        projectsData = await response.json();
+        console.log('Projects data loaded successfully');
+        
+        // Dispatch an event to notify that projects data is loaded
+        const event = new CustomEvent('projectsDataLoaded');
+        document.dispatchEvent(event);
+    } catch (error) {
+        console.error('Error loading projects data:', error);
+        
+        // Fallback to empty array if data cannot be loaded
+        projectsData = [];
+        
+        // Still dispatch event so UI doesn't hang
+        const event = new CustomEvent('projectsDataLoaded');
+        document.dispatchEvent(event);
+    }
+}
+
+// Initialize data loading when the page is ready
+document.addEventListener('DOMContentLoaded', loadProjectsData);

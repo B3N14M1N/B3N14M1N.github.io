@@ -1,4 +1,3 @@
-// filepath: d:\DOCUMENTS\personal\Site\Scripts\documentation-selector.js
 // Documentation selector page specific functionality
 
 // Documentation Selector Manager to handle displaying available documentation
@@ -43,8 +42,17 @@ class DocumentationSelectorManager {
 document.addEventListener('DOMContentLoaded', function() {
     // Only run this code on the documentation selector page
     if (window.location.pathname.includes('documentation-selector.html')) {
-        // Setup documentation selector manager
-        const docSelectorManager = new DocumentationSelectorManager();
-        docSelectorManager.init();
+        // Wait for documentation index to be loaded
+        document.addEventListener('documentationIndexLoaded', function() {
+            // Setup documentation selector manager
+            const docSelectorManager = new DocumentationSelectorManager();
+            docSelectorManager.init();
+        });
+        
+        // If data is already loaded (cached), initialize immediately
+        if (documentationData.documentationIndex && documentationData.documentationIndex.length > 0) {
+            const docSelectorManager = new DocumentationSelectorManager();
+            docSelectorManager.init();
+        }
     }
 });

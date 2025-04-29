@@ -32,6 +32,7 @@ class DocumentationManager {
         this.isManualNavigation = false;
         this.isScrolling = false;
         this.isInitialLoad = true;
+        this.isLoadingDoc = false;
     }
     
     getQueryParam(param) {
@@ -49,22 +50,106 @@ class DocumentationManager {
             sectionId = window.location.hash.substring(1); // Remove the # character
         }
         
-        if (docId && documentationData[docId]) {
-            // Load the requested documentation
-            this.loadDocumentation(docId, sectionId);
+        // Initialize event listeners
+        this.initEventListeners();
+        
+        if (docId) {
+            // Try to load the requested documentation
+            this.loadDocumentationById(docId, sectionId);
         } else {
             // If no valid documentation ID is provided, redirect to the selector page
             window.location.href = 'documentation-selector.html';
         }
+    }
+    
+    async loadDocumentationById(docId, sectionId = null, updateHistory = true) {
+        if (this.isLoadingDoc) {
+            return; // Prevent multiple simultaneous loads
+        }
         
-        // Initialize event listeners
-        this.initEventListeners();
+        this.isLoadingDoc = true;
         
-        // Store initial content state after a short delay
-        setTimeout(() => {
-            this.storeInitialState();
-            this.isInitialLoad = false;
-        }, 300);
+        try {
+            // Try to load the documentation using our async loader
+            const doc = await loadDocumentation(docId);
+            
+            if (!doc) {
+                throw new Error(`Documentation with ID ${docId} not found`);
+            }
+            
+            // Update current documentation
+            this.currentDoc = docId;
+            this.currentSection = sectionId;
+            
+            // Update title and description
+            this.docTitle.textContent = doc.title;
+            this.docDescription.textContent = doc.description;
+            
+            // Check for saved sidebar state
+            const savedSidebarState = localStorage.getItem('sidebarCollapsed');
+            if (savedSidebarState === 'true') {
+                this.contentWrapper.classList.add('sidebar-collapsed');
+                this.docHeader.classList.add('sidebar-collapsed');
+                this.sidebar.classList.add('collapsed');
+                
+                if (document.getElementById('sidebar-icon')) {
+                    document.getElementById('sidebar-icon').classList.remove('bi-chevron-left');
+                    document.getElementById('sidebar-icon').classList.add('bi-chevron-right');
+                }
+            }
+            
+            // Generate table of contents
+            this.generateTableOfContents(doc);
+            
+            // Generate content
+            this.generateDocumentationContent(doc);
+            
+            // Setup scroll tracking for active section
+            this.setupScrollTracking();
+            
+            // Scroll to section if specified after a short delay to let content render
+            setTimeout(() => {
+                if (sectionId) {
+                    this.scrollToSection(sectionId);
+                    this.setActiveLink(sectionId);
+                } else if (doc.sections && doc.sections.length > 0) {
+                    // Default to first section if no section specified
+                    this.setActiveLink(doc.sections[0].id);
+                }
+                
+                // Update URL if needed
+                if (updateHistory) {
+                    const url = `?doc=${docId}${sectionId ? '#' + sectionId : ''}`;
+                    
+                    const state = {
+                        docId,
+                        sectionId
+                    };
+                    
+                    // Use pushState to add a browser history entry
+                    history.pushState(state, '', url);
+                }
+                
+                // Store initial content state after a short delay
+                setTimeout(() => {
+                    this.storeInitialState();
+                    this.isInitialLoad = false;
+                }, 300);
+                
+                // Refresh syntax highlighting
+                if (typeof hljs !== 'undefined') {
+                    hljs.highlightAll();
+                    this.addCopyButtons();
+                }
+            }, 100);
+            
+        } catch (error) {
+            console.error('Error loading documentation:', error);
+            // Redirect to selector page on error
+            window.location.href = 'documentation-selector.html';
+        } finally {
+            this.isLoadingDoc = false;
+        }
     }
     
     storeInitialState() {
@@ -80,7 +165,7 @@ class DocumentationManager {
     }
     
     getDefaultSectionId() {
-        // Get the first section id if available
+        // Get the first section id if available from the current documentation
         const doc = documentationData[this.currentDoc];
         return doc && doc.sections && doc.sections.length > 0 ? doc.sections[0].id : null;
     }
@@ -112,7 +197,7 @@ class DocumentationManager {
                 
                 // Check if we need to reload the documentation
                 if (docId !== this.currentDoc) {
-                    this.loadDocumentation(docId, sectionId, false);
+                    this.loadDocumentationById(docId, sectionId, false);
                 } else if (sectionId) {
                     // Just scroll to section
                     this.scrollToSection(sectionId);
@@ -147,76 +232,6 @@ class DocumentationManager {
         this.docTocList.addEventListener('click', (event) => {
             event.stopPropagation();
         });
-    }
-    
-    loadDocumentation(docId, sectionId = null, updateHistory = true) {
-        // Get documentation data
-        const doc = documentationData[docId];
-        if (!doc) {
-            // If documentation doesn't exist, redirect to selector
-            window.location.href = 'documentation-selector.html';
-            return;
-        }
-        
-        // Update current documentation
-        this.currentDoc = docId;
-        this.currentSection = sectionId;
-        
-        // Update title and description
-        this.docTitle.textContent = doc.title;
-        this.docDescription.textContent = doc.description;
-        
-        // Check for saved sidebar state
-        const savedSidebarState = localStorage.getItem('sidebarCollapsed');
-        if (savedSidebarState === 'true') {
-            this.contentWrapper.classList.add('sidebar-collapsed');
-            this.docHeader.classList.add('sidebar-collapsed');
-            this.sidebar.classList.add('collapsed');
-            
-            if (document.getElementById('sidebar-icon')) {
-                document.getElementById('sidebar-icon').classList.remove('bi-chevron-left');
-                document.getElementById('sidebar-icon').classList.add('bi-chevron-right');
-            }
-        }
-        
-        // Generate table of contents
-        this.generateTableOfContents(doc);
-        
-        // Generate content
-        this.generateDocumentationContent(doc);
-        
-        // Setup scroll tracking for active section
-        this.setupScrollTracking();
-        
-        // Scroll to section if specified after a short delay to let content render
-        setTimeout(() => {
-            if (sectionId) {
-                this.scrollToSection(sectionId);
-                this.setActiveLink(sectionId);
-            } else if (doc.sections && doc.sections.length > 0) {
-                // Default to first section if no section specified
-                this.setActiveLink(doc.sections[0].id);
-            }
-            
-            // Update URL if needed
-            if (updateHistory) {
-                const url = `?doc=${docId}${sectionId ? '#' + sectionId : ''}`;
-                
-                const state = {
-                    docId,
-                    sectionId
-                };
-                
-                // Use pushState to add a browser history entry
-                history.pushState(state, '', url);
-            }
-            
-            // Refresh syntax highlighting
-            if (typeof hljs !== 'undefined') {
-                hljs.highlightAll();
-                this.addCopyButtons();
-            }
-        }, 100);
     }
     
     generateTableOfContents(doc) {

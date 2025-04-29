@@ -6,7 +6,15 @@ let globalCurrentProjectIndex = 0;
 document.addEventListener('DOMContentLoaded', function () {
     // Only run this code on the projects page
     if (window.location.pathname.includes('projects.html')) {
-        loadProjects();
+        // We'll now wait for the projects data to be loaded
+        document.addEventListener('projectsDataLoaded', function() {
+            loadProjects();
+        });
+        
+        // If data is already loaded (cached), initialize immediately
+        if (projectsData && projectsData.length > 0) {
+            loadProjects();
+        }
     }
 
     // Function to load projects using the external projectsData variable
