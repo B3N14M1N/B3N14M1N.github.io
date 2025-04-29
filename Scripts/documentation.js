@@ -18,17 +18,36 @@ class DocumentationManager {
         this.currentDoc = null;
         this.currentSection = null;
         
-        // URL parameters
-        this.urlParams = new URLSearchParams(window.location.search);
+        // Initial URL state extraction (now using hash fragments)
+        const hash = window.location.hash;
+        const docId = this.getQueryParam('doc');
+        let sectionId = hash.substring(1); // Remove the # character
         
-        // Flag to track if scroll tracking is active
+        // Store initial state
+        this.initialDocId = docId;
+        this.initialSectionId = sectionId;
+        
+        // Flags
         this.scrollTrackingActive = false;
+        this.isManualNavigation = false;
+        this.isScrolling = false;
+        this.isInitialLoad = true;
+    }
+    
+    getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
     }
     
     init() {
         // Check if a specific documentation is requested
-        const docId = this.urlParams.get('doc');
-        const sectionId = this.urlParams.get('section');
+        const docId = this.getQueryParam('doc');
+        let sectionId = null;
+        
+        // Get section from hash if available
+        if (window.location.hash) {
+            sectionId = window.location.hash.substring(1); // Remove the # character
+        }
         
         if (docId && documentationData[docId]) {
             // Load the requested documentation
@@ -40,21 +59,93 @@ class DocumentationManager {
         
         // Initialize event listeners
         this.initEventListeners();
+        
+        // Store initial content state after a short delay
+        setTimeout(() => {
+            this.storeInitialState();
+            this.isInitialLoad = false;
+        }, 300);
+    }
+    
+    storeInitialState() {
+        // Store the initial state of the page so we can restore it when navigating back
+        const state = {
+            docId: this.currentDoc,
+            sectionId: this.currentSection || this.getDefaultSectionId()
+        };
+        
+        // Replace current history entry with state
+        // This ensures proper state restoration when navigating back to this page
+        history.replaceState(state, '', window.location.href);
+    }
+    
+    getDefaultSectionId() {
+        // Get the first section id if available
+        const doc = documentationData[this.currentDoc];
+        return doc && doc.sections && doc.sections.length > 0 ? doc.sections[0].id : null;
     }
     
     initEventListeners() {
-        // Listen for URL changes (for navigation within documentation)
-        window.addEventListener('popstate', (event) => {
-            const params = new URLSearchParams(window.location.search);
-            const docId = params.get('doc');
-            const sectionId = params.get('section');
-            
-            if (docId && documentationData[docId]) {
-                this.loadDocumentation(docId, sectionId, false);
-            } else {
-                // If no valid documentation ID is provided, redirect to the selector page
-                window.location.href = 'documentation-selector.html';
+        // Listen for hash changes
+        window.addEventListener('hashchange', (event) => {
+            // Only handle if not during manual navigation
+            if (!this.isManualNavigation) {
+                const hash = window.location.hash;
+                const sectionId = hash.substring(1);
+                
+                if (sectionId && this.currentDoc) {
+                    // Scroll to the section without adding to history
+                    this.scrollToSection(sectionId);
+                    this.setActiveLink(sectionId);
+                }
             }
+        });
+        
+        // Handle popstate events (back/forward browser buttons)
+        window.addEventListener('popstate', (event) => {
+            // When user presses back/forward, restore the state
+            if (event.state) {
+                const { docId, sectionId } = event.state;
+                
+                // Prevent scroll tracking during state restoration
+                this.isManualNavigation = true;
+                
+                // Check if we need to reload the documentation
+                if (docId !== this.currentDoc) {
+                    this.loadDocumentation(docId, sectionId, false);
+                } else if (sectionId) {
+                    // Just scroll to section
+                    this.scrollToSection(sectionId);
+                    this.setActiveLink(sectionId);
+                }
+                
+                setTimeout(() => {
+                    this.isManualNavigation = false;
+                }, 100);
+            } else if (window.location.hash) {
+                // Handle case where there's a hash but no state
+                const sectionId = window.location.hash.substring(1);
+                if (sectionId) {
+                    this.isManualNavigation = true;
+                    this.scrollToSection(sectionId);
+                    this.setActiveLink(sectionId);
+                    setTimeout(() => {
+                        this.isManualNavigation = false;
+                    }, 100);
+                }
+            } else {
+                // If no state and no hash, we might be back at initial page load
+                // Check if we need to redirect to selector
+                const docId = this.getQueryParam('doc');
+                if (!docId) {
+                    window.location.href = 'documentation-selector.html';
+                }
+            }
+        });
+        
+        // Stop propagation on TOC links to prevent body click handler from firing
+        this.docTocList.addEventListener('click', (event) => {
+            event.stopPropagation();
         });
     }
     
@@ -69,6 +160,7 @@ class DocumentationManager {
         
         // Update current documentation
         this.currentDoc = docId;
+        this.currentSection = sectionId;
         
         // Update title and description
         this.docTitle.textContent = doc.title;
@@ -96,30 +188,35 @@ class DocumentationManager {
         // Setup scroll tracking for active section
         this.setupScrollTracking();
         
-        // Scroll to section if specified
-        if (sectionId) {
-            this.scrollToSection(sectionId);
-            this.setActiveLink(sectionId);
-        } else if (doc.sections && doc.sections.length > 0) {
-            // Default to first section
-            this.setActiveLink(doc.sections[0].id);
-        }
-        
-        // Update URL if needed
-        if (updateHistory) {
-            const url = sectionId 
-                ? `?doc=${docId}&section=${sectionId}` 
-                : `?doc=${docId}`;
-            history.pushState({docId, sectionId}, '', url);
-        }
-        
-        // Refresh syntax highlighting
-        if (typeof hljs !== 'undefined') {
-            setTimeout(() => {
+        // Scroll to section if specified after a short delay to let content render
+        setTimeout(() => {
+            if (sectionId) {
+                this.scrollToSection(sectionId);
+                this.setActiveLink(sectionId);
+            } else if (doc.sections && doc.sections.length > 0) {
+                // Default to first section if no section specified
+                this.setActiveLink(doc.sections[0].id);
+            }
+            
+            // Update URL if needed
+            if (updateHistory) {
+                const url = `?doc=${docId}${sectionId ? '#' + sectionId : ''}`;
+                
+                const state = {
+                    docId,
+                    sectionId
+                };
+                
+                // Use pushState to add a browser history entry
+                history.pushState(state, '', url);
+            }
+            
+            // Refresh syntax highlighting
+            if (typeof hljs !== 'undefined') {
                 hljs.highlightAll();
                 this.addCopyButtons();
-            }, 100);
-        }
+            }
+        }, 100);
     }
     
     generateTableOfContents(doc) {
@@ -137,46 +234,87 @@ class DocumentationManager {
         doc.sections.forEach(section => {
             // Main section link
             const sectionLink = document.createElement('a');
-            sectionLink.href = `?doc=${this.currentDoc}&section=${section.id}`;
+            sectionLink.href = `#${section.id}`;
             sectionLink.className = 'list-group-item list-group-item-action';
             sectionLink.textContent = section.title;
             sectionLink.setAttribute('data-section-id', section.id);
             
-            // Prevent default link behavior
+            // Handle click on section link
             sectionLink.addEventListener('click', (event) => {
                 event.preventDefault();
-                this.loadDocumentation(this.currentDoc, section.id);
+                
+                // Mark as manual navigation
+                this.isManualNavigation = true;
+                
+                // Set section as active
+                this.setActiveLink(section.id);
+                
+                // Scroll to section
+                this.scrollToSection(section.id);
+                
+                // Update URL with hash fragment
+                const url = `?doc=${this.currentDoc}#${section.id}`;
+                const state = {
+                    docId: this.currentDoc,
+                    sectionId: section.id
+                };
+                
+                history.pushState(state, '', url);
+                
+                // Reset flags after short delay
+                setTimeout(() => {
+                    this.isManualNavigation = false;
+                }, 100);
             });
             
             this.docTocList.appendChild(sectionLink);
             
             // Add subsections if available
             if (section.content) {
-                this.addSubsectionsToToc(section, this.currentDoc);
+                this.addSubsectionsToToc(section);
             }
         });
     }
     
-    addSubsectionsToToc(section, docId) {
+    addSubsectionsToToc(section) {
         // Find subSections in the content
         section.content.forEach(item => {
             if (item.type === 'subSection') {
                 // Create subsection link with indentation
                 const subsectionLink = document.createElement('a');
-                subsectionLink.href = `?doc=${docId}&section=${section.id}&subsection=${item.id}`;
+                const combinedId = `${section.id}-${item.id}`;
+                
+                subsectionLink.href = `#${combinedId}`;
                 subsectionLink.className = 'list-group-item list-group-item-action ps-4';
                 subsectionLink.innerHTML = `<small>→ ${item.title}</small>`;
-                subsectionLink.setAttribute('data-section-id', `${section.id}-${item.id}`);
+                subsectionLink.setAttribute('data-section-id', combinedId);
                 
-                // Prevent default link behavior
+                // Handle click on subsection link
                 subsectionLink.addEventListener('click', (event) => {
                     event.preventDefault();
-                    this.scrollToSection(`${section.id}-${item.id}`);
-                    this.setActiveLink(`${section.id}-${item.id}`);
                     
-                    // Update URL
-                    const url = `?doc=${docId}&section=${section.id}&subsection=${item.id}`;
-                    history.pushState({docId, sectionId: section.id, subsectionId: item.id}, '', url);
+                    // Mark as manual navigation
+                    this.isManualNavigation = true;
+                    
+                    // Scroll to subsection
+                    this.scrollToSection(combinedId);
+                    
+                    // Set subsection as active
+                    this.setActiveLink(combinedId);
+                    
+                    // Update URL with hash fragment
+                    const url = `?doc=${this.currentDoc}#${combinedId}`;
+                    const state = {
+                        docId: this.currentDoc,
+                        sectionId: combinedId
+                    };
+                    
+                    history.pushState(state, '', url);
+                    
+                    // Reset flags after short delay
+                    setTimeout(() => {
+                        this.isManualNavigation = false;
+                    }, 100);
                 });
                 
                 this.docTocList.appendChild(subsectionLink);
@@ -312,10 +450,18 @@ class DocumentationManager {
             const sectionPosition = section.getBoundingClientRect().top;
             const offsetPosition = sectionPosition + window.pageYOffset - headerOffset;
             
+            // Temporarily disable scroll tracking during programmatic scrolling
+            this.isScrolling = true;
+            
             window.scrollTo({
                 top: offsetPosition,
                 behavior: 'smooth'
             });
+            
+            // Re-enable scroll tracking after animation completes
+            setTimeout(() => {
+                this.isScrolling = false;
+            }, 500);
         }
     }
     
@@ -335,6 +481,11 @@ class DocumentationManager {
     }
     
     updateActiveSection() {
+        // Skip scroll handling during programmatic scrolling or manual navigation
+        if (this.isScrolling || this.isManualNavigation || this.isInitialLoad) {
+            return;
+        }
+        
         // Get all documentation sections
         const sections = document.querySelectorAll('.doc-content');
         let currentSectionId = null;
@@ -367,13 +518,22 @@ class DocumentationManager {
             }
         });
         
-        // If found a visible section, update the active link
+        // If found a visible section, update the active link and URL hash
         if (currentSectionId) {
-            this.setActiveLink(currentSectionId, false);
+            this.setActiveLink(currentSectionId);
+            
+            // Use replaceState to update URL without affecting browser history
+            const url = `?doc=${this.currentDoc}#${currentSectionId}`;
+            const state = {
+                docId: this.currentDoc,
+                sectionId: currentSectionId
+            };
+            
+            history.replaceState(state, '', url);
         }
     }
     
-    setActiveLink(sectionId, updateUrl = true) {
+    setActiveLink(sectionId) {
         // Remove active class from all links
         document.querySelectorAll('#doc-toc-list .list-group-item').forEach(link => {
             link.classList.remove('active');
@@ -383,25 +543,6 @@ class DocumentationManager {
         const activeLink = document.querySelector(`#doc-toc-list [data-section-id="${sectionId}"]`);
         if (activeLink) {
             activeLink.classList.add('active');
-            
-            // Update URL if needed and if this is a user-initiated action (not from scrolling)
-            if (updateUrl && this.currentDoc) {
-                // Parse section id to determine if it's a subsection
-                const parts = sectionId.split('-');
-                let url;
-                
-                if (parts.length > 1) {
-                    // It's a subsection
-                    const mainSection = parts[0];
-                    const subsection = parts.slice(1).join('-');
-                    url = `?doc=${this.currentDoc}&section=${mainSection}&subsection=${subsection}`;
-                } else {
-                    // It's a main section
-                    url = `?doc=${this.currentDoc}&section=${sectionId}`;
-                }
-                
-                history.replaceState({docId: this.currentDoc, sectionId: sectionId}, '', url);
-            }
         }
     }
     
