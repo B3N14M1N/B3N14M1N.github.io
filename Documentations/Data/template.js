@@ -1,4 +1,3 @@
-// filepath: d:\DOCUMENTS\personal\Site\Documentations\Data\template.js
 // Documentation template - Copy this when creating a new documentation file
 // Remember to rename the variable and update all the content
 
@@ -27,6 +26,12 @@ const templateData = {
                     {
                         type: "subheading", 
                         text: "Subheading Example"
+                    },
+                    {
+                        type: "image",
+                        url: "https://via.placeholder.com/800x400?text=Documentation+Image",
+                        alt: "Example documentation image",
+                        caption: "This is an example image with a caption below it"
                     },
                     {
                         type: "list",
@@ -59,6 +64,11 @@ const templateData = {
                             {
                                 type: "paragraph",
                                 text: "Content inside a subsection."
+                            },
+                            {
+                                type: "image",
+                                url: "https://via.placeholder.com/600x300?text=Subsection+Image",
+                                caption: "Images can also be added inside subsections"
                             }
                         ]
                     }

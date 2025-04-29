@@ -20,6 +20,12 @@ const voxelSystemData = {
                         text: "Welcome to the Voxel-System documentation. This guide will help you understand and utilize the voxel system effectively in your projects. The voxel system is designed to create and manage voxel-based worlds with high performance and flexibility."
                     },
                     {
+                        type: "image",
+                        url: "https://via.placeholder.com/800x400?text=Voxel+System+Overview",
+                        alt: "Voxel System Overview",
+                        caption: "A visual overview of how the voxel system components interact"
+                    },
+                    {
                         type: "subheading",
                         text: "What is a Voxel?"
                     },
@@ -77,6 +83,12 @@ const voxelSystemData = {
                         type: "code",
                         language: "csharp",
                         text: "// Initialize the voxel system\nVoxelWorld world = new VoxelWorld(new Vector3(16, 16, 16), 1.0f);\n\n// Create a voxel chunk\nVoxelChunk chunk = world.CreateChunk(Vector3.zero);\n\n// Set some voxels\nchunk.SetVoxel(new Vector3Int(0, 0, 0), new Voxel(1, VoxelType.Solid));\nchunk.SetVoxel(new Vector3Int(1, 0, 0), new Voxel(2, VoxelType.Solid));\n\n// Generate mesh for rendering\nchunk.GenerateMesh();"
+                    },
+                    {
+                        type: "image",
+                        url: "https://via.placeholder.com/800x500?text=Voxel+World+Example",
+                        alt: "Example of a voxel world",
+                        caption: "A simple voxel world created with the code example above"
                     }
                 ]
             },
@@ -103,6 +115,12 @@ const voxelSystemData = {
                     {
                         type: "paragraph",
                         text: "A VoxelChunk represents a section of the world containing multiple voxels. Chunks are the primary unit of organization and optimization in the system."
+                    },
+                    {
+                        type: "image",
+                        url: "https://via.placeholder.com/600x600?text=Voxel+Chunk+Structure",
+                        alt: "Voxel Chunk Structure",
+                        caption: "Diagram showing the internal structure of a voxel chunk"
                     },
                     {
                         type: "subheading",
@@ -171,6 +189,12 @@ const voxelSystemData = {
                         type: "code",
                         language: "csharp",
                         text: "void GenerateTerrain(VoxelChunk chunk, float seed)\n{\n    // Loop through each position in the chunk\n    for (int x = 0; x < chunk.Size.x; x++)\n    {\n        for (int z = 0; z < chunk.Size.z; z++)\n        {\n            // Calculate height using Perlin noise\n            float noiseValue = Mathf.PerlinNoise(\n                (chunk.Position.x + x) * 0.1f + seed,\n                (chunk.Position.z + z) * 0.1f + seed\n            );\n            \n            int height = Mathf.FloorToInt(noiseValue * 10) + 5;\n            \n            // Fill voxels up to the calculated height\n            for (int y = 0; y < chunk.Size.y; y++)\n            {\n                if (y <= height)\n                {\n                    // Determine voxel type based on height\n                    VoxelType type = VoxelType.Solid;\n                    int id = 1; // Stone\n                    \n                    if (y == height)\n                    {\n                        id = 2; // Grass\n                    }\n                    else if (y > height - 3 && y < height)\n                    {\n                        id = 3; // Dirt\n                    }\n                    \n                    chunk.SetVoxel(new Vector3Int(x, y, z), new Voxel(id, type));\n                }\n            }\n        }\n    }\n    \n    // Generate the mesh for rendering\n    chunk.GenerateMesh();\n}"
+                    },
+                    {
+                        type: "image",
+                        url: "https://via.placeholder.com/800x450?text=Procedural+Terrain+Generation",
+                        alt: "Procedural terrain generated with the voxel system",
+                        caption: "Procedural terrain with different biomes created using the Voxel-System"
                     }
                 ]
             },

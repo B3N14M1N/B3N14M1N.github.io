@@ -218,6 +218,28 @@ class DocumentationManager {
                     parentElement.appendChild(p);
                     break;
                     
+                case 'image':
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'doc-image-container';
+                    
+                    const img = document.createElement('img');
+                    img.src = item.url;
+                    img.alt = item.alt || item.caption || 'Documentation image';
+                    img.className = 'doc-image';
+                    
+                    imgContainer.appendChild(img);
+                    
+                    // Add caption if provided
+                    if (item.caption) {
+                        const caption = document.createElement('figcaption');
+                        caption.className = 'doc-image-caption';
+                        caption.textContent = item.caption;
+                        imgContainer.appendChild(caption);
+                    }
+                    
+                    parentElement.appendChild(imgContainer);
+                    break;
+                    
                 case 'subheading':
                     const h3 = document.createElement('h3');
                     h3.className = item.className || '';

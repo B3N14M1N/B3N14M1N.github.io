@@ -1,5 +1,27 @@
 /* Documentation page specific styles */
 
+/* Documentation image styles */
+.doc-image-container {
+  margin: 2rem auto;
+  text-align: center;
+  max-width: 100%;
+}
+
+.doc-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.doc-image-caption {
+  margin-top: 1rem;
+  font-style: italic;
+  color: var(--muted-text);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 /* Documentation Layout */
 .doc-wrapper {
   display: flex;
