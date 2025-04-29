@@ -193,6 +193,46 @@
   line-height: 1.7;
 }
 
+/* Documentation card styling */
+.doc-selector-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-selector-card .card-body {
+  flex: 1 1 auto;
+  /* Removes bottom margin to ensure proper alignment with footer */
+  padding-bottom: 0.25rem;
+}
+
+.doc-selector-card .card-footer {
+  background-color: transparent;
+  padding: 0.75rem 1rem 1.25rem;
+  border-top: none;
+}
+
+.doc-selector-card .card-title {
+  margin-bottom: 1rem;
+}
+
+.doc-selector-card .card-text {
+  margin-bottom: 1rem;
+}
+
+.doc-selector-card .card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: flex-start;
+}
+
+.doc-selector-card .card-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
 /* Card styling in documentation */
 .doc-content .card {
   background-color: var(--bs-card-bg);

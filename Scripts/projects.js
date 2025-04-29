@@ -15,6 +15,36 @@ document.addEventListener('DOMContentLoaded', function () {
         if (projectsData && projectsData.length > 0) {
             loadProjects();
         }
+        
+        // Default empty state - hide controls and show message
+        setupEmptyState();
+    }
+    
+    // Function to setup empty state
+    function setupEmptyState() {
+        const projectsContainer = document.getElementById('projects-container');
+        const projectsViewContainer = document.querySelector('.projects-view-container');
+        const scrollButtons = document.querySelectorAll('.scroll-btn-wrapper');
+        const navigationIndicators = document.querySelector('.project-navigation-indicators');
+        const categoriesContainer = document.querySelector('.project-categories');
+        
+        if (projectsContainer) {
+            // Add empty state message
+            projectsContainer.innerHTML = `
+                <div class="col-12 text-center py-5 empty-state">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h4 class="text-muted">Loading projects...</h4>
+                    <p class="text-muted">If projects don't appear, there might be an issue loading the data.</p>
+                </div>
+            `;
+            
+            // Hide scroll buttons and indicators until projects load
+            scrollButtons.forEach(btn => btn.style.display = 'none');
+            if (navigationIndicators) navigationIndicators.style.display = 'none';
+            if (categoriesContainer) categoriesContainer.innerHTML = '';
+        }
     }
 
     // Function to load projects using the external projectsData variable
@@ -22,10 +52,33 @@ document.addEventListener('DOMContentLoaded', function () {
         // Use the projects from project-data.js
         const projects = projectsData;
         const projectsContainer = document.getElementById('projects-container');
+        const projectsViewContainer = document.querySelector('.projects-view-container');
+        const scrollButtons = document.querySelectorAll('.scroll-btn-wrapper');
+        const navigationIndicators = document.querySelector('.project-navigation-indicators');
 
-        if (projectsContainer && projects.length > 0) {
+        if (projectsContainer) {
+            // If no projects, show empty state and return
+            if (!projects || projects.length === 0) {
+                projectsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5 empty-state">
+                        <i class="bi bi-emoji-frown display-4 text-muted"></i>
+                        <h4 class="text-muted mt-3">No Projects Available</h4>
+                        <p class="text-muted">There are currently no projects to display.</p>
+                    </div>
+                `;
+                
+                // Hide scroll buttons and indicators
+                scrollButtons.forEach(btn => btn.style.display = 'none');
+                if (navigationIndicators) navigationIndicators.style.display = 'none';
+                return;
+            }
+            
             // Clear existing content
             projectsContainer.innerHTML = '';
+            
+            // Show scroll buttons and indicators
+            scrollButtons.forEach(btn => btn.style.display = 'flex');
+            if (navigationIndicators) navigationIndicators.style.display = 'flex';
             
             // Add a spacer element at the beginning (won't be counted in navigation logic)
             const startSpacer = document.createElement('div');
