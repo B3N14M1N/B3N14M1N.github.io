@@ -2,7 +2,7 @@
     "id": "web-api",
     "title": "Web API Documentation",
     "description": "Guide to using the REST API for website integration",
-    "thumbnail": "https://via.placeholder.com/600x400?text=Web+API",
+    "thumbnail": "https://placehold.co/600x400?text=Web+API",
     "tags": ["Web", "REST", "API"],
     "content": {
         "title": "Web API Documentation",

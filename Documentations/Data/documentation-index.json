@@ -3,14 +3,14 @@
         "id": "voxel-system",
         "title": "Voxel-System Documentation",
         "description": "Comprehensive guide and API reference for the Voxel-System project",
-        "thumbnail": "https://via.placeholder.com/600x400?text=Voxel+System",
+        "thumbnail": "https://placehold.co/600x400?text=Voxel+System",
         "tags": ["Game Development", "C#", "Unity"]
     },
     {
         "id": "web-api",
         "title": "Web API Documentation",
         "description": "API reference for web services and endpoints",
-        "thumbnail": "https://via.placeholder.com/600x400?text=Web+API",
+        "thumbnail": "https://placehold.co/600x400?text=text=Web+API",
         "tags": ["Web", "API", "JavaScript"]
     }
 ]

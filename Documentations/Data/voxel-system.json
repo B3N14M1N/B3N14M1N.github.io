@@ -2,7 +2,7 @@
     "id": "voxel-system",
     "title": "Voxel-System Documentation",
     "description": "Comprehensive guide and API reference for the Voxel-System project",
-    "thumbnail": "https://via.placeholder.com/600x400?text=Voxel+System",
+    "thumbnail": "https://placehold.co/600x400?text=Voxel+System",
     "tags": ["Game Development", "C#", "Unity"],
     "content": {
         "title": "Voxel-System Documentation",
@@ -18,7 +18,7 @@
                     },
                     {
                         "type": "image",
-                        "url": "https://via.placeholder.com/800x400?text=Voxel+System+Overview",
+                        "url": "https://placehold.co/800x400?text=Voxel+System+Overview",
                         "alt": "Voxel System Overview",
                         "caption": "A visual overview of how the voxel system components interact"
                     },
@@ -83,7 +83,7 @@
                     },
                     {
                         "type": "image",
-                        "url": "https://via.placeholder.com/800x500?text=Voxel+World+Example",
+                        "url": "https://placehold.co/800x500?text=Voxel+World+Example",
                         "alt": "Example of a voxel world",
                         "caption": "A simple voxel world created with the code example above"
                     }
@@ -115,7 +115,7 @@
                     },
                     {
                         "type": "image",
-                        "url": "https://via.placeholder.com/600x600?text=Voxel+Chunk+Structure",
+                        "url": "https://placehold.co/600x600?text=Voxel+Chunk+Structure",
                         "alt": "Voxel Chunk Structure",
                         "caption": "Diagram showing the internal structure of a voxel chunk"
                     },
@@ -189,7 +189,7 @@
                     },
                     {
                         "type": "image",
-                        "url": "https://via.placeholder.com/800x450?text=Procedural+Terrain+Generation",
+                        "url": "https://placehold.co/800x450?text=Procedural+Terrain+Generation",
                         "alt": "Procedural terrain generated with the voxel system",
                         "caption": "Procedural terrain with different biomes created using the Voxel-System"
                     }
