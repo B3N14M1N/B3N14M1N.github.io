@@ -25,8 +25,44 @@
         <!-- Documentation Header -->
         <section class="py-5 text-center">
             <div class="container">
-                <h1 class="display-4 fw-bold">Documentation</h1>
-                <p class="lead">Select a documentation set to begin</p>
+                <h1 class="display-4 fw-bold">Documentation Hub</h1>
+                <p class="lead">Browse my available documentation or upload your own JSON documentation file</p>
+                
+                <!-- JSON File Upload Section -->
+                <div class="mt-4 json-upload-container">
+                    <button class="btn btn-outline-primary" id="toggle-upload-btn">
+                        <i class="bi bi-upload me-2"></i>Have Your Own Documentation? Upload JSON
+                    </button>
+                    
+                    <div class="json-upload-form collapse mt-3" id="upload-form">
+                        <div class="card p-3 mx-auto" style="max-width: 600px;">
+                            <div class="card-body">
+                                <h5 class="card-title">Load Your Documentation from JSON</h5>
+                                <p class="card-text">Upload a JSON file with your documentation structure or paste its content below. Your documentation will be displayed with the same beautiful formatting as the built-in ones.</p>
+                                
+                                <div class="mb-3">
+                                    <label for="json-file-input" class="form-label">Upload JSON File</label>
+                                    <input class="form-control" type="file" id="json-file-input" accept=".json">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="json-text-input" class="form-label">Or paste JSON content</label>
+                                    <textarea class="form-control" id="json-text-input" rows="3" placeholder='{"id": "example", "title": "Example Documentation", ...}'></textarea>
+                                </div>
+                                
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <button class="btn btn-outline-secondary" id="cancel-upload-btn">Cancel</button>
+                                    <button class="btn btn-primary" id="load-json-btn">Load Documentation</button>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info mt-3" id="json-upload-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <span>New to this? Check out the <a href="documentation.html?doc=documentation-template">Documentation Template Guide</a> to learn how to structure your JSON.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -56,11 +92,6 @@
     
     <!-- First load the main documentation data manager -->
     <script src="../Documentations/documentation-data.js"></script>
-    
-    <!-- Then load individual documentation data files (they will auto-register) -->
-    <script src="../Documentations/Data/voxel-system.js"></script>
-    <script src="../Documentations/Data/web-api.js"></script>
-    <!-- Add new documentation files here -->
     
     <!-- Shared JS -->
     <script src="../shared.js"></script>

@@ -5,11 +5,85 @@ class DocumentationSelectorManager {
     constructor() {
         // Elements
         this.docCards = document.getElementById('documentation-cards');
+        
+        // JSON upload elements
+        this.toggleUploadBtn = document.getElementById('toggle-upload-btn');
+        this.uploadForm = document.getElementById('upload-form');
+        this.jsonFileInput = document.getElementById('json-file-input');
+        this.jsonTextInput = document.getElementById('json-text-input');
+        this.cancelUploadBtn = document.getElementById('cancel-upload-btn');
+        this.loadJsonBtn = document.getElementById('load-json-btn');
+        
+        // Bind event handlers
+        this.bindEvents();
+    }
+    
+    bindEvents() {
+        // Toggle upload form visibility
+        this.toggleUploadBtn.addEventListener('click', () => {
+            bootstrap.Collapse.getOrCreateInstance(this.uploadForm).toggle();
+        });
+        
+        // Cancel upload button
+        this.cancelUploadBtn.addEventListener('click', () => {
+            this.resetUploadForm();
+            bootstrap.Collapse.getOrCreateInstance(this.uploadForm).hide();
+        });
+        
+        // Load JSON button
+        this.loadJsonBtn.addEventListener('click', () => {
+            this.loadDocumentationFromJson();
+        });
+        
+        // File input change - read and display JSON content
+        this.jsonFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.jsonTextInput.value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
     }
     
     init() {
         // Generate documentation cards
         this.generateDocumentationCards();
+    }
+    
+    resetUploadForm() {
+        this.jsonFileInput.value = '';
+        this.jsonTextInput.value = '';
+    }
+    
+    loadDocumentationFromJson() {
+        try {
+            const jsonContent = this.jsonTextInput.value.trim();
+            
+            if (!jsonContent) {
+                throw new Error("Please provide JSON content or upload a file.");
+            }
+            
+            // Parse JSON
+            const docData = JSON.parse(jsonContent);
+            
+            // Validate required fields
+            if (!docData.id || !docData.title || !docData.content) {
+                throw new Error("Invalid documentation format. Missing required fields.");
+            }
+            
+            // Store in session storage to be accessible across pages
+            sessionStorage.setItem('uploaded_documentation', jsonContent);
+            
+            // Navigate to documentation page with the uploaded doc
+            window.location.href = `documentation.html?doc=${docData.id}&source=upload`;
+            
+        } catch (error) {
+            // Show error message
+            alert(`Error loading documentation: ${error.message}`);
+        }
     }
     
     generateDocumentationCards() {

@@ -1,0 +1,241 @@
+{
+    "id": "documentation-template",
+    "title": "Documentation Template Guide",
+    "description": "A comprehensive guide to creating structured documentation in JSON format",
+    "thumbnail": "https://placehold.co/600x400?text=Documentation+Template",
+    "tags": ["Guide", "Template", "JSON"],
+    "content": {
+        "title": "Documentation Structure Template",
+        "description": "Learn how to create structured documentation using the JSON format",
+        "sections": [
+            {
+                "id": "introduction",
+                "title": "Introduction",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "text": "This guide explains how to create structured documentation in JSON format that can be used with this documentation system. You can use this template as a starting point for your own documentation."
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "The documentation system is designed to create beautiful, structured documentation pages from a simple JSON format. You can upload your own documentation JSON files using the uploader on the documentation selector page."
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "How to Use This Template"
+                    },
+                    {
+                        "type": "list",
+                        "items": [
+                            "Copy this template and modify it to match your documentation needs",
+                            "Save it as a .json file",
+                            "Upload it using the uploader on the documentation selector page",
+                            "View your beautifully formatted documentation"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "structure",
+                "title": "JSON Structure",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "text": "The documentation JSON file has a specific structure that must be followed. Here's a breakdown of the top-level fields:"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"id\": \"unique-identifier\",         // Required: Unique ID for the documentation\n  \"title\": \"Documentation Title\",    // Required: Title displayed in the header\n  \"description\": \"A brief description\", // Optional: Short description\n  \"thumbnail\": \"url-to-image\",        // Optional: Thumbnail image URL\n  \"tags\": [\"Tag1\", \"Tag2\"],         // Optional: Tags for categorization\n  \"content\": { ... }                 // Required: Main content object\n}"
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "Content Structure"
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "The content object contains the actual documentation content, organized into sections:"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "\"content\": {\n  \"title\": \"Documentation Title\",    // Required: Title for content\n  \"description\": \"A brief description\", // Optional: Content description\n  \"sections\": [ ... ]                // Required: Array of section objects\n}"
+                    }
+                ]
+            },
+            {
+                "id": "sections",
+                "title": "Sections",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "text": "Sections are the main organizational units of your documentation. Each section appears as a top-level item in the table of contents and has its own heading on the page."
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"id\": \"section-id\",         // Required: Unique ID for the section (used for linking)\n  \"title\": \"Section Title\",   // Required: Section title displayed in TOC and as heading\n  \"content\": [ ... ]         // Required: Array of content items in this section\n}"
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "Each section must have a unique ID that is used for direct linking and the table of contents. The content array contains various content items that make up the section."
+                    }
+                ]
+            },
+            {
+                "id": "content-items",
+                "title": "Content Items",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "text": "Content items are the building blocks of your documentation. Each item has a specific type that determines how it is rendered on the page."
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "Paragraph"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"type\": \"paragraph\",\n  \"text\": \"This is a paragraph of text. You can include <strong>HTML</strong> formatting.\"\n}"
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "Paragraphs are the most basic content item. The text can include HTML formatting for additional styling."
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "Subheading"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"type\": \"subheading\",\n  \"text\": \"This is a subheading\",\n  \"className\": \"optional-css-class\"  // Optional: Additional CSS classes\n}"
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "Image"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"type\": \"image\",\n  \"url\": \"https://example.com/image.jpg\",  // Required: Image URL\n  \"alt\": \"Alt text for accessibility\",    // Optional: Alt text\n  \"caption\": \"Image caption\"              // Optional: Caption displayed below image\n}"
+                    },
+                    {
+                        "type": "image",
+                        "url": "https://placehold.co/600x300?text=Example+Image",
+                        "alt": "Example image",
+                        "caption": "This is an example of an image with a caption"
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "List"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"type\": \"list\",\n  \"items\": [\n    \"First item\",\n    \"Second item\",\n    \"Third item\"\n  ]\n}"
+                    },
+                    {
+                        "type": "list",
+                        "items": [
+                            "This is an example of a list",
+                            "Lists are rendered as unordered lists (bullet points)",
+                            "Each item is a separate string in the items array"
+                        ]
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "Code"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"type\": \"code\",\n  \"language\": \"javascript\",        // Optional: Code language for syntax highlighting\n  \"text\": \"function example() {\\n  console.log('Hello, world!');\\n}\"  // Code text\n}"
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "The code block above demonstrates how to define a code block in your documentation. The language field is used for syntax highlighting and is optional."
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "FAQ"
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"type\": \"faq\",\n  \"items\": [\n    {\n      \"question\": \"What is this documentation system?\",\n      \"answer\": \"This is a flexible documentation system that uses JSON for content.\"\n    },\n    {\n      \"question\": \"How do I create my own documentation?\",\n      \"answer\": \"Use this template as a starting point and modify it.\"\n    }\n  ]\n}"
+                    },
+                    {
+                        "type": "faq",
+                        "items": [
+                            {
+                                "question": "What is this documentation system?",
+                                "answer": "This is a flexible documentation system that uses JSON for content structure and formatting."
+                            },
+                            {
+                                "question": "How do I create my own documentation?",
+                                "answer": "Use this template as a starting point and modify it to match your needs."
+                            }
+                        ]
+                    },
+                    {
+                        "type": "subheading",
+                        "text": "Subsection"
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "Subsections allow you to create nested content within a section. They appear in the table of contents as indented items under the parent section."
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"type\": \"subSection\",\n  \"id\": \"unique-subsection-id\",    // Required: Unique ID for the subsection\n  \"title\": \"Subsection Title\",     // Required: Subsection title\n  \"content\": [ ... ]              // Array of content items in this subsection\n}"
+                    }
+                ]
+            },
+            {
+                "id": "complete-example",
+                "title": "Complete Example",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "text": "Below is a complete example of a minimal documentation JSON structure. You can use this as a starting point for your own documentation."
+                    },
+                    {
+                        "type": "code",
+                        "language": "json",
+                        "text": "{\n  \"id\": \"my-documentation\",\n  \"title\": \"My Documentation\",\n  \"description\": \"A brief description of my documentation\",\n  \"thumbnail\": \"https://placehold.co/600x400?text=My+Documentation\",\n  \"tags\": [\"Example\", \"Guide\"],\n  \"content\": {\n    \"title\": \"My Documentation\",\n    \"description\": \"A comprehensive guide to my project\",\n    \"sections\": [\n      {\n        \"id\": \"introduction\",\n        \"title\": \"Introduction\",\n        \"content\": [\n          {\n            \"type\": \"paragraph\",\n            \"text\": \"Welcome to my documentation. This is an introduction paragraph.\"\n          },\n          {\n            \"type\": \"list\",\n            \"items\": [\n              \"Key feature one\",\n              \"Key feature two\",\n              \"Key feature three\"\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"getting-started\",\n        \"title\": \"Getting Started\",\n        \"content\": [\n          {\n            \"type\": \"paragraph\",\n            \"text\": \"Here's how to get started with my project.\"\n          },\n          {\n            \"type\": \"code\",\n            \"language\": \"javascript\",\n            \"text\": \"// Example code\\nconst project = new MyProject();\\nproject.initialize();\\n\"\n          },\n          {\n            \"type\": \"subSection\",\n            \"id\": \"installation\",\n            \"title\": \"Installation\",\n            \"content\": [\n              {\n                \"type\": \"paragraph\",\n                \"text\": \"Installation instructions go here.\"\n              },\n              {\n                \"type\": \"code\",\n                \"language\": \"bash\",\n                \"text\": \"npm install my-project\\n\"\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}"
+                    }
+                ]
+            },
+            {
+                "id": "uploading",
+                "title": "Uploading Your Documentation",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "text": "Once you've created your documentation JSON file, you can upload it to view it in the documentation system. Here's how:"
+                    },
+                    {
+                        "type": "list",
+                        "items": [
+                            "Go to the Documentation Selector page",
+                            "Click on the 'Load Documentation from JSON' button",
+                            "Either upload your JSON file or paste the JSON content into the text area",
+                            "Click 'Load Documentation' to view your documentation"
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "Your documentation will be loaded and displayed using the same formatting and navigation features as the built-in documentation. The documentation is stored in your browser's session storage, so it will be available until you close your browser."
+                    },
+                    {
+                        "type": "paragraph",
+                        "text": "<strong>Note:</strong> Uploaded documentation is temporary and will not be saved on the server. If you want to share your documentation with others, you'll need to provide them with the JSON file."
+                    }
+                ]
+            }
+        ]
+    }
+}

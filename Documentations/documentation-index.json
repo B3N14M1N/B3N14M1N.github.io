@@ -10,7 +10,14 @@
         "id": "web-api",
         "title": "Web API Documentation",
         "description": "API reference for web services and endpoints",
-        "thumbnail": "https://placehold.co/600x400?text=text=Web+API",
+        "thumbnail": "https://placehold.co/600x400?text=Web+API",
         "tags": ["Web", "API", "JavaScript"]
+    },
+    {
+        "id": "documentation-template",
+        "title": "JSON Template Documentation",
+        "description": "Template for creating JSON-based documentation",
+        "thumbnail": "https://placehold.co/600x400?text=JSON+Template",
+        "tags": ["Documentation", "JSON", "Template"]
     }
 ]
