@@ -10,7 +10,7 @@
         "id": "web-api",
         "title": "Web API Documentation",
         "description": "API reference for web services and endpoints",
-        "thumbnail": "https://placehold.co/600x400?text=text=Web+API",
+        "thumbnail": "https://placehold.co/600x400?text=Web+API",
         "tags": ["Web", "API", "JavaScript"]
     }
 ]
