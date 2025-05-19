@@ -33,6 +33,7 @@ class DocumentationManager {
         this.isScrolling = false;
         this.isInitialLoad = true;
         this.isLoadingDoc = false;
+        this.isUploadedDoc = false;
     }
     
     getQueryParam(param) {
@@ -43,6 +44,7 @@ class DocumentationManager {
     init() {
         // Check if a specific documentation is requested
         const docId = this.getQueryParam('doc');
+        const source = this.getQueryParam('source');
         let sectionId = null;
         
         // Get section from hash if available
@@ -54,10 +56,116 @@ class DocumentationManager {
         this.initEventListeners();
         
         if (docId) {
-            // Try to load the requested documentation
-            this.loadDocumentationById(docId, sectionId);
+            // Check if this is an uploaded documentation
+            if (source === 'upload') {
+                this.loadUploadedDocumentation(docId, sectionId);
+            } else {
+                // Try to load the requested documentation
+                this.loadDocumentationById(docId, sectionId);
+            }
         } else {
             // If no valid documentation ID is provided, redirect to the selector page
+            window.location.href = 'documentation-selector.html';
+        }
+    }
+    
+    loadUploadedDocumentation(docId, sectionId = null, updateHistory = true) {
+        try {
+            // Get the uploaded documentation from session storage
+            const jsonData = sessionStorage.getItem('uploaded_documentation');
+            
+            if (!jsonData) {
+                throw new Error('No uploaded documentation found');
+            }
+            
+            // Parse the JSON data
+            const doc = JSON.parse(jsonData);
+            
+            // Validate the document structure
+            if (!doc.id || !doc.title || !doc.content) {
+                throw new Error('Invalid documentation format');
+            }
+            
+            // Make sure the IDs match
+            if (doc.id !== docId) {
+                throw new Error('Documentation ID mismatch');
+            }
+            
+            // Set flag that we're using uploaded documentation
+            this.isUploadedDoc = true;
+            
+            // Update current documentation
+            this.currentDoc = docId;
+            this.currentSection = sectionId;
+            
+            // Update title and description
+            this.docTitle.textContent = doc.title;
+            this.docDescription.textContent = doc.description || '';
+            
+            // Check for saved sidebar state
+            const savedSidebarState = localStorage.getItem('sidebarCollapsed');
+            if (savedSidebarState === 'true') {
+                this.contentWrapper.classList.add('sidebar-collapsed');
+                this.docHeader.classList.add('sidebar-collapsed');
+                this.sidebar.classList.add('collapsed');
+                
+                if (document.getElementById('sidebar-icon')) {
+                    document.getElementById('sidebar-icon').classList.remove('bi-chevron-left');
+                    document.getElementById('sidebar-icon').classList.add('bi-chevron-right');
+                }
+            }
+            
+            // Generate table of contents
+            this.generateTableOfContents(doc.content);
+            
+            // Generate content
+            this.generateDocumentationContent(doc.content);
+            
+            // Setup scroll tracking for active section
+            this.setupScrollTracking();
+            
+            // Scroll to section if specified after a short delay to let content render
+            setTimeout(() => {
+                if (sectionId) {
+                    this.scrollToSection(sectionId);
+                    this.setActiveLink(sectionId);
+                } else if (doc.content.sections && doc.content.sections.length > 0) {
+                    // Default to first section if no section specified
+                    this.setActiveLink(doc.content.sections[0].id);
+                }
+                
+                // Update URL if needed
+                if (updateHistory) {
+                    const url = `?doc=${docId}&source=upload${sectionId ? '#' + sectionId : ''}`;
+                    
+                    const state = {
+                        docId,
+                        sectionId,
+                        source: 'upload'
+                    };
+                    
+                    // Use pushState to add a browser history entry
+                    history.pushState(state, '', url);
+                }
+                
+                // Store initial content state after a short delay
+                setTimeout(() => {
+                    this.storeInitialState();
+                    this.isInitialLoad = false;
+                }, 300);
+                
+                // Refresh syntax highlighting
+                if (typeof hljs !== 'undefined') {
+                    hljs.highlightAll();
+                    this.addCopyButtons();
+                }
+            }, 100);
+            
+        } catch (error) {
+            console.error('Error loading uploaded documentation:', error);
+            // Show error message
+            alert(`Error loading documentation: ${error.message}`);
+            // Redirect to selector page on error
             window.location.href = 'documentation-selector.html';
         }
     }

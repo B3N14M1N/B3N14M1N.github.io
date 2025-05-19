@@ -26,7 +26,7 @@ async function loadDocumentationIndex() {
     try {
         const basePath = getDocBasePath();
         // Fetch the documentation index with the correct path
-        const response = await fetch(`${basePath}Documentations/Data/documentation-index.json`);
+        const response = await fetch(`${basePath}Documentations/documentation-index.json`);
         
         if (!response.ok) {
             throw new Error(`Failed to load documentation index: ${response.status}`);
