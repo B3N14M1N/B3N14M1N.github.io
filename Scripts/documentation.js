@@ -14,6 +14,9 @@ class DocumentationManager {
         this.contentWrapper = document.getElementById('doc-content-wrapper');
         this.docHeader = document.getElementById('doc-header');
         
+        // Component factory manager
+        this.factoryManager = new ComponentFactoryManager();
+        
         // State
         this.currentDoc = null;
         this.currentSection = null;
@@ -154,11 +157,8 @@ class DocumentationManager {
                     this.isInitialLoad = false;
                 }, 300);
                 
-                // Refresh syntax highlighting
-                if (typeof hljs !== 'undefined') {
-                    hljs.highlightAll();
-                    this.addCopyButtons();
-                }
+                // Post-process components to add functionality
+                this.factoryManager.postProcessComponents();
             }, 100);
             
         } catch (error) {
@@ -244,11 +244,8 @@ class DocumentationManager {
                     this.isInitialLoad = false;
                 }, 300);
                 
-                // Refresh syntax highlighting
-                if (typeof hljs !== 'undefined') {
-                    hljs.highlightAll();
-                    this.addCopyButtons();
-                }
+                // Post-process components to add functionality
+                this.factoryManager.postProcessComponents();
             }, 100);
             
         } catch (error) {
@@ -461,7 +458,7 @@ class DocumentationManager {
             titleElement.textContent = section.title;
             sectionElement.appendChild(titleElement);
             
-            // Add section content
+            // Add section content using component factories
             if (section.content) {
                 this.renderContentItems(section.content, sectionElement, section.id);
             }
@@ -471,97 +468,23 @@ class DocumentationManager {
     }
     
     renderContentItems(contentItems, parentElement, sectionId) {
+        // Create a bound render function to pass to subsection factory
+        const renderFunction = (items, parent, id) => {
+            this.renderContentItems(items, parent, id);
+        };
+        
         contentItems.forEach(item => {
-            switch (item.type) {
-                case 'paragraph':
-                    const p = document.createElement('p');
-                    p.innerHTML = item.text;
-                    parentElement.appendChild(p);
-                    break;
-                    
-                case 'image':
-                    const imgContainer = document.createElement('div');
-                    imgContainer.className = 'doc-image-container';
-                    
-                    const img = document.createElement('img');
-                    img.src = item.url;
-                    img.alt = item.alt || item.caption || 'Documentation image';
-                    img.className = 'doc-image';
-                    
-                    imgContainer.appendChild(img);
-                    
-                    // Add caption if provided
-                    if (item.caption) {
-                        const caption = document.createElement('figcaption');
-                        caption.className = 'doc-image-caption';
-                        caption.textContent = item.caption;
-                        imgContainer.appendChild(caption);
-                    }
-                    
-                    parentElement.appendChild(imgContainer);
-                    break;
-                    
-                case 'subheading':
-                    const h3 = document.createElement('h3');
-                    h3.className = item.className || '';
-                    h3.textContent = item.text;
-                    parentElement.appendChild(h3);
-                    break;
-                    
-                case 'list':
-                    const ul = document.createElement('ul');
-                    item.items.forEach(listItem => {
-                        const li = document.createElement('li');
-                        li.textContent = listItem;
-                        ul.appendChild(li);
-                    });
-                    parentElement.appendChild(ul);
-                    break;
-                    
-                case 'code':
-                    const pre = document.createElement('pre');
-                    const code = document.createElement('code');
-                    code.className = item.language ? `language-${item.language}` : '';
-                    code.textContent = item.text;
-                    pre.appendChild(code);
-                    parentElement.appendChild(pre);
-                    break;
-                    
-                case 'faq':
-                    item.items.forEach((faqItem, index) => {
-                        const card = document.createElement('div');
-                        card.className = 'card mb-3';
-                        card.innerHTML = `
-                            <div class="card-body">
-                                <h5 class="card-title">${faqItem.question}</h5>
-                                <p class="card-text">${faqItem.answer}</p>
-                            </div>
-                        `;
-                        parentElement.appendChild(card);
-                    });
-                    break;
-                    
-                case 'subSection':
-                    // Create subsection with unique ID combining parent section ID and subsection ID
-                    const subSection = document.createElement('div');
-                    subSection.id = `${sectionId}-${item.id}`;
-                    subSection.className = 'doc-subsection mt-4 pt-2 border-top';
-                    
-                    const subSectionTitle = document.createElement('h3');
-                    subSectionTitle.className = 'mb-3';
-                    subSectionTitle.textContent = item.title;
-                    subSection.appendChild(subSectionTitle);
-                    
-                    // Recursively render subsection content
-                    if (item.content) {
-                        this.renderContentItems(item.content, subSection, `${sectionId}-${item.id}`);
-                    }
-                    
-                    parentElement.appendChild(subSection);
-                    break;
-                    
-                default:
-                    console.warn(`Unknown content type: ${item.type}`);
+            // Use factory manager to create component
+            const component = this.factoryManager.createComponent(
+                item, 
+                sectionId, 
+                renderFunction
+            );
+            
+            if (component) {
+                parentElement.appendChild(component);
+            } else {
+                console.warn(`Failed to create component for type: ${item.type}`);
             }
         });
     }
@@ -668,107 +591,6 @@ class DocumentationManager {
             activeLink.classList.add('active');
         }
     }
-    
-    addCopyButtons() {
-        // Select all <pre> elements that contain code blocks
-        const codeBlocks = document.querySelectorAll('pre');
-        
-        codeBlocks.forEach((codeBlock) => {
-            // Skip if already has a copy button
-            if (codeBlock.querySelector('.copy-code-button')) {
-                return;
-            }
-            
-            // Create the copy button
-            const copyButton = document.createElement('button');
-            copyButton.className = 'copy-code-button';
-            copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
-            copyButton.ariaLabel = 'Copy code to clipboard';
-            
-            // Insert the button at the beginning of the code block
-            codeBlock.insertBefore(copyButton, codeBlock.firstChild);
-            
-            // Add click event to copy the code
-            copyButton.addEventListener('click', () => {
-                const code = codeBlock.querySelector('code');
-                const textToCopy = code.innerText || code.textContent;
-                
-                let copySuccess = false;
-                
-                // Try using the Clipboard API first (modern browsers)
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(textToCopy)
-                        .then(() => {
-                            copySuccess = true;
-                            showCopySuccess();
-                        })
-                        .catch(err => {
-                            console.error('Error with Clipboard API:', err);
-                            fallbackCopyMethod();
-                        });
-                } else {
-                    // Fallback for browsers without Clipboard API
-                    fallbackCopyMethod();
-                }
-                
-                // Fallback copy method using textarea
-                function fallbackCopyMethod() {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = textToCopy;
-                    
-                    // Make the textarea out of viewport
-                    textArea.style.position = 'fixed';
-                    textArea.style.left = '-999999px';
-                    textArea.style.top = '-999999px';
-                    document.body.appendChild(textArea);
-                    
-                    // Focus and select the text
-                    textArea.focus();
-                    textArea.select();
-                    
-                    try {
-                        // Execute the copy command
-                        const successful = document.execCommand('copy');
-                        copySuccess = successful;
-                        if (successful) {
-                            showCopySuccess();
-                        } else {
-                            showCopyError('Copy command failed');
-                        }
-                    } catch (err) {
-                        console.error('Fallback copy error:', err);
-                        showCopyError('Copy not supported');
-                    }
-                    
-                    // Remove the textarea
-                    document.body.removeChild(textArea);
-                }
-                
-                // Show success feedback
-                function showCopySuccess() {
-                    copyButton.innerHTML = '<i class="bi bi-clipboard-check"></i> Copied!';
-                    copyButton.classList.add('copied');
-                    
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
-                        copyButton.classList.remove('copied');
-                    }, 2000);
-                }
-                
-                // Show error feedback
-                function showCopyError(errorMsg) {
-                    copyButton.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Error!';
-                    console.error('Copy failed:', errorMsg);
-                    
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
-                    }, 2000);
-                }
-            });
-        });
-    }
 }
 
 // Sidebar functionality
@@ -841,11 +663,6 @@ function setupSidebar() {
 document.addEventListener('DOMContentLoaded', function() {
     // Only run this code on the documentation page (not the selector)
     if (window.location.pathname.includes('documentation.html')) {
-        // Initialize code highlighting if hljs is available
-        if (typeof hljs !== 'undefined') {
-            hljs.highlightAll();
-        }
-        
         // Setup documentation manager
         const docManager = new DocumentationManager();
         docManager.init();
