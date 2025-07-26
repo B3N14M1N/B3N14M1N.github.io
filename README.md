@@ -1,16 +1,16 @@
-# Beniamin Cioban's Personal Site
+# My Personal Site
 
 Welcome to my personal website repository! This site serves as my portfolio, documentation hub, and project showcase.
 
 ## 👨‍💻 Original Creator
-This project was created from scratch by me, **Beniamin Cioban**. I designed and built this entire website, including the custom JSON-based documentation system that powers the documentation section. I am actively developing and maintaining this project.
+This project was created by me, **Beniamin Cioban**. I designed and built this entire website, including the custom JSON-based documentation system that powers the documentation section. I am actively developing and maintaining this project.
 
 ## 🌐 Site Information
 - **Live Website**: [beniamincioban.com](https://beniamincioban.com)
 - **GitHub Pages URL**: [b3n14m1n.github.io](https://b3n14m1n.github.io/)
 
 ## 👤 About Me
-I'm a Computer Science student from Romania. This is my personal site where I showcase my work and skills.
+I'm a computer science graduate from Romania. This is my personal site where I showcase my work and skills.
 
 ## 🧰 Features
 - Portfolio showcasing my skills and experience
@@ -35,7 +35,7 @@ I'm continuously improving this website with new features and content. Currently
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=B3N14M1N&theme=tokyonight)
 
 ## 🤝 Contributing
-While this is my personal project that I built from scratch, it's open to the public. If you'd like to suggest improvements or modifications:
+While this is my personal project, it's open to the public. If you'd like to suggest improvements, modifications or just use it for yourself:
 ```
 git clone https://github.com/B3N14M1N/B3N14M1N.github.io.git
 ```
