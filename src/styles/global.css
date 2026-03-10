@@ -1,0 +1,107 @@
+﻿@import "tailwindcss";
+
+/* Class-based dark mode for Tailwind v4 */
+@variant dark (&:is(.dark, .dark *));
+
+/* =============================================
+   Theme tokens – Tailwind v4 reads these for
+   utility generation AND outputs them as :root
+   custom properties inside @layer theme.
+   ============================================= */
+
+@theme {
+  --color-primary: #6c63ff;
+  --color-primary-hover: #5a52e0;
+  --color-accent: #f96d6d;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f5f7fa;
+  --color-surface-elevated: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-sidebar-bg: #f3f4f6;
+  --color-code-bg: #f5f5f5;
+  --color-code-text: #333333;
+  --color-hero-from: #f5f7fa;
+  --color-hero-to: #ebedee;
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* =============================================
+   Dark mode overrides
+   Outside any @layer → wins over @layer theme
+   :root.dark specificity > :root specificity
+   ============================================= */
+
+:root.dark {
+  --color-primary: #8a80ff;
+  --color-primary-hover: #7a70f0;
+  --color-accent: #ff8787;
+  --color-surface: #0f0f0f;
+  --color-surface-alt: #1a1a1a;
+  --color-surface-elevated: #1e1e1e;
+  --color-border: #2e2e2e;
+  --color-text: #f0f0f0;
+  --color-text-muted: #9ca3af;
+  --color-sidebar-bg: #141414;
+  --color-code-bg: #1e1e1e;
+  --color-code-text: #e6e6e6;
+  --color-hero-from: #1a1a2e;
+  --color-hero-to: #0f0f0f;
+}
+
+/* =============================================
+   Base
+   ============================================= */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+  scrollbar-gutter: stable;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Pointer cursor for all interactive elements */
+button,
+[role="button"],
+a {
+  cursor: pointer;
+}
+
+/* =============================================
+   Scrollbar (subtle)
+   ============================================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* =============================================
+   Selection
+   ============================================= */
+
+::selection {
+  background-color: var(--color-primary);
+  color: #fff;
+}

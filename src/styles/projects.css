@@ -1,0 +1,19 @@
+﻿/* =============================================
+   Projects page styles
+   ============================================= */
+
+.projects-scroll-container {
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.projects-scroll-container::-webkit-scrollbar {
+  display: none;
+}
