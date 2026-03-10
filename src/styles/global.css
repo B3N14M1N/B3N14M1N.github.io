@@ -105,3 +105,39 @@ a {
   background-color: var(--color-primary);
   color: #fff;
 }
+
+/* =============================================
+   Brand link – chameleon text glow
+   ============================================= */
+
+@property --brand-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.brand-text {
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    #6c63ff, #f96d6d, #38bdf8, #34d399, #facc15, #6c63ff
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: brand-wave 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px rgba(108, 99, 255, 0.4));
+  transition: filter 0.3s ease;
+}
+
+.brand-link:hover .brand-text {
+  filter: drop-shadow(0 0 8px rgba(108, 99, 255, 0.6))
+         drop-shadow(0 0 16px rgba(56, 189, 248, 0.3));
+}
+
+@keyframes brand-wave {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

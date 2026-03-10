@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
-import { Home, FolderKanban, BookOpen, Sun, Moon, Menu, X } from 'lucide-react';
+import { FolderKanban, BookOpen, Sun, Moon, Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { to: '/', icon: Home, label: 'Home', end: true },
   { to: '/projects', icon: FolderKanban, label: 'Projects' },
   { to: '/documentation', icon: BookOpen, label: 'Docs' },
 ];
@@ -12,18 +11,26 @@ const NAV_ITEMS = [
 function Navbar() {
   const { isDark, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 h-16 backdrop-blur-md border-b border-border bg-surface/80">
       <div className="max-w-6xl mx-auto px-4 h-full flex items-center justify-between">
-        {/* Brand */}
-        <NavLink
-          to="/"
-          className="text-lg font-bold text-primary tracking-tight"
-          onClick={() => setOpen(false)}
-        >
-          BC
-        </NavLink>
+        {/* Brand – hidden on home page */}
+        {!isHome ? (
+          <NavLink
+            to="/"
+            className="brand-link group relative px-3 py-1.5 rounded-lg font-bold tracking-tight text-lg transition-all"
+            onClick={() => setOpen(false)}
+          >
+            <span className="relative z-10 brand-text">
+              Beniamin Cioban
+            </span>
+          </NavLink>
+        ) : (
+          <div className="w-0" />
+        )}
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
@@ -70,11 +77,10 @@ function Navbar() {
       {open && (
         <div className="md:hidden border-t border-border/50 bg-surface/95 backdrop-blur-md">
           <div className="px-4 py-3 flex flex-col gap-1">
-            {NAV_ITEMS.map(({ to, icon: Icon, label, end }) => (
+            {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
               <NavLink
                 key={to}
                 to={to}
-                end={end}
                 className={({ isActive }) =>
                   `flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive

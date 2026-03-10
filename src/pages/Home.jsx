@@ -4,7 +4,7 @@ import { Mail, ArrowRight, Gamepad2, Tv, Code2 } from 'lucide-react';
 import { usePageTitle } from '../hooks/usePageTitle';
 import ContactModal from '../components/common/ContactModal';
 
-const SKILLS = ['PL/SQL', '.NET', 'Game Dev', 'Web Dev'];
+const SKILLS = ['C#', '.NET', 'Unity', 'Web Dev'];
 
 const INTERESTS = [
   { icon: Gamepad2, label: 'Gaming' },
@@ -32,9 +32,9 @@ function Home() {
             <h1 className="text-3xl md:text-5xl font-bold text-text">
               Beniamin <span className="text-primary">Cioban</span>
             </h1>
-            <p className="text-text-muted">Computer Science Graduate &middot; Data Engineer</p>
+            <p className="text-text-muted">Cybersecurity student &middot; Software Developer</p>
             <p className="text-sm text-text-muted max-w-lg">
-              Welcome to my portfolio — I showcase projects and share documentation for my work.
+              Welcome to my portfolio. I showcase projects and share documentation for my work.
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
               <button
