@@ -1,47 +1,59 @@
-# My Personal Site
+# Beniamin Cioban — Portfolio
 
-Welcome to my personal website repository! This site serves as my portfolio, documentation hub, and project showcase.
+Personal portfolio website showcasing my projects and documentation.
 
-## 👨‍💻 Original Creator
-This project was created by me, **Beniamin Cioban**. I designed and built this entire website, including the custom JSON-based documentation system that powers the documentation section. I am actively developing and maintaining this project.
+**Live:** [beniamincioban.com](https://beniamincioban.com)
 
-## 🌐 Site Information
-- **Live Website**: [beniamincioban.com](https://beniamincioban.com)
-- **GitHub Pages URL**: [b3n14m1n.github.io](https://b3n14m1n.github.io/)
+## Tech Stack
 
-## 👤 About Me
-I'm a computer science graduate from Romania. This is my personal site where I showcase my work and skills.
+- **React 19** with React Router (HashRouter)
+- **Tailwind CSS v4** with light/dark theme
+- **Vite 7** build tooling
+- **highlight.js** for code syntax highlighting
+- **lucide-react** icons
+- **gh-pages** for deployment
 
-## 🧰 Features
-- Portfolio showcasing my skills and experience
-- **Custom JSON-based documentation system** (designed and built by me)
-- Project showcase with details on my work
-- Component factory system for dynamic content generation
-- More features planned for the future!
+## Features
 
-## 🚧 Work in Progress
-I'm continuously improving this website with new features and content. Currently focusing on:
-- Enhancing the JSON documentation system
-- Expanding project showcases
-- Optimizing component factories
-- Improving overall user experience
+- Responsive design with glass-effect navbar
+- Dark / light theme toggle (persisted)
+- Project showcase with carousel navigation
+- Custom JSON-based documentation system with sidebar, code blocks, FAQ accordion, and deep-link scrolling
+- Contact modal with clipboard copy
 
-## 📊 GitHub Stats
+## Getting Started
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=B3N14M1N&show_icons=true&theme=tokyonight)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=B3N14M1N&layout=compact&theme=tokyonight)
-
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=B3N14M1N&theme=tokyonight)
-
-## 🤝 Contributing
-While this is my personal project, it's open to the public. If you'd like to suggest improvements, modifications or just use it for yourself:
-```
-git clone https://github.com/B3N14M1N/B3N14M1N.github.io.git
+```bash
+npm install
+npm run dev
 ```
 
-## 📝 License
-This project is open-source and was created entirely by me. Feel free to use it as inspiration for your own personal site!
+## Build & Deploy
 
-## 📫 Contact
-- GitHub: [@B3N14M1N](https://github.com/B3N14M1N)
+```bash
+npm run build      # Production build → dist/
+npm run deploy     # Build + deploy to GitHub Pages
+```
+
+## Project Structure
+
+```
+src/
+  components/       # Reusable UI components
+    common/         # CodeBlock, ContactModal, LoadingSpinner
+    documentation/  # DocSidebar, DocCard, ContentRenderer
+    layout/         # Navbar, Footer
+    projects/       # ProjectCard, ProjectCarousel
+  context/          # ThemeContext
+  hooks/            # useTheme, useFetch, useScrollSpy
+  pages/            # Home, Projects, Documentation, DocumentationSelector
+  styles/           # global.css, documentation.css, projects.css
+public/
+  data/             # JSON data files
+  Images/           # Static images
+  CNAME             # Custom domain
+```
+
+## Author
+
+**Beniamin Cioban** — [@B3N14M1N](https://github.com/B3N14M1N)

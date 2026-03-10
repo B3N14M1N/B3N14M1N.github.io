@@ -1,0 +1,94 @@
+﻿/* =============================================
+   Documentation-specific styles
+   ============================================= */
+
+/* Code blocks */
+pre {
+  position: relative;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+}
+
+pre code {
+  display: block;
+  padding: 1rem;
+  overflow: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+}
+
+/* =============================================
+   Highlight.js syntax token colors – Light
+   ============================================= */
+
+.hljs-keyword,
+.hljs-selector-tag { color: #d73a49; }
+.hljs-string,
+.hljs-doctag { color: #032f62; }
+.hljs-comment { color: #6a737d; font-style: italic; }
+.hljs-number,
+.hljs-literal { color: #005cc5; }
+.hljs-title,
+.hljs-title.function_ { color: #6f42c1; }
+.hljs-type,
+.hljs-title.class_ { color: #22863a; }
+.hljs-built_in { color: #e36209; }
+.hljs-attr,
+.hljs-attribute { color: #005cc5; }
+.hljs-params { color: #24292e; }
+.hljs-meta { color: #735c0f; }
+.hljs-variable,
+.hljs-template-variable { color: #e36209; }
+.hljs-symbol { color: #005cc5; }
+.hljs-name { color: #22863a; }
+.hljs-tag { color: #22863a; }
+.hljs-section { color: #005cc5; font-weight: 700; }
+
+/* =============================================
+   Highlight.js syntax token colors – Dark
+   ============================================= */
+
+.dark .hljs-keyword,
+.dark .hljs-selector-tag { color: #ff7b72; }
+.dark .hljs-string,
+.dark .hljs-doctag { color: #a5d6ff; }
+.dark .hljs-comment { color: #8b949e; font-style: italic; }
+.dark .hljs-number,
+.dark .hljs-literal { color: #79c0ff; }
+.dark .hljs-title,
+.dark .hljs-title.function_ { color: #d2a8ff; }
+.dark .hljs-type,
+.dark .hljs-title.class_ { color: #7ee787; }
+.dark .hljs-built_in { color: #ffa657; }
+.dark .hljs-attr,
+.dark .hljs-attribute { color: #79c0ff; }
+.dark .hljs-params { color: #c9d1d9; }
+.dark .hljs-meta { color: #e3b341; }
+.dark .hljs-variable,
+.dark .hljs-template-variable { color: #ffa657; }
+.dark .hljs-symbol { color: #79c0ff; }
+.dark .hljs-name { color: #7ee787; }
+.dark .hljs-tag { color: #7ee787; }
+.dark .hljs-section { color: #79c0ff; font-weight: 700; }
+
+/* Doc content headings */
+.doc-content h2 {
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.doc-content h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  background-color: var(--color-primary);
+  border-radius: 1px;
+}
